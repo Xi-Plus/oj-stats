@@ -34,6 +34,9 @@ try {
 			if (!is_array(json_decode($_REQUEST['prob']))) {
 				throw new Exception('Prob is not array');
 			}
+			if ($oj->checkpid(json_decode($_REQUEST['prob']))) {
+				throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
+			}
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']), json_decode($_REQUEST['prob']));
 		} else {
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']));

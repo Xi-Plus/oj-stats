@@ -36,6 +36,13 @@ class toj {
 		return $response;
 	}
 
+	public function checkpid($prob){
+		foreach ($prob as $pid) {
+			if (!preg_match($this->pattern, $pid)) return true;
+		}
+		return false;
+	}
+
 	public function fetch($validtime, $uid) {
 		$data=$this->read($uid);
 		if($data!==false&&$validtime<$data['timestamp'])return $data;
