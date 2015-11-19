@@ -43,7 +43,7 @@ class toj {
 		return false;
 	}
 
-	public function fetch($validtime, $uid) {
+	private function fetch($validtime, $uid) {
 		$data=$this->read($uid);
 		if($data!==false&&$validtime<$data['timestamp'])return $data;
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'INFO','acct_id'=>$uid))->html,true);
