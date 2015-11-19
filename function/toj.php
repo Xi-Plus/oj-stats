@@ -55,11 +55,11 @@ class toj {
 
 	private function save($uid, $data) {
 		$data['timestamp']=time();
-		file_put_contents(__DIR__.'/../cache/toj_'.$uid, json_encode($data));
+		file_put_contents(__DIR__.'/../cache/toj_'.$uid.'.dat', json_encode($data));
 	}
 
 	private function read($uid) {
-		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid), true);
+		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid.'.dat'), true);
 		return $data;
 	}
 }
