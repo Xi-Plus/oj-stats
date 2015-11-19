@@ -18,12 +18,22 @@ try {
 	if ($_REQUEST['field']=='ojinfo') {
 		$response=$oj->ojinfo();
 	} else if ($_REQUEST['field']=='userinfo') {
+		if (!is_array(json_decode($_REQUEST['user']))) {
+			throw new Exception('User is not array');
+		}
 		$response=$oj->userinfo(json_decode($_REQUEST['user']));
 	} else if($_REQUEST['field']=='userstat'){
+		if (!is_array(json_decode($_REQUEST['user']))) {
+			throw new Exception('User is not array');
+		}
+
 		if(isset($_REQUEST['validtime'])&&is_numeric($_REQUEST['validtime']))$validtime=$_REQUEST['validtime'];
 		else $validtime=time()-3600;
 		
 		if (isset($_REQUEST['prob'])) {
+			if (!is_array(json_decode($_REQUEST['prob']))) {
+				throw new Exception('Prob is not array');
+			}
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']), json_decode($_REQUEST['prob']));
 		} else {
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']));

@@ -22,13 +22,13 @@ class toj {
 		return $response;
 	}
 
-	private function savestat($uid, $stat){
+	private function savestat($uid, $stat) {
 		$data['timestamp']=time();
 		$data['stat']=$stat;
 		file_put_contents(__DIR__.'/../cache/toj_'.$uid, json_encode($data));
 	}
 
-	private function readstat($uid){
+	private function readstat($uid) {
 		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid), true);
 		return $data;
 	}
@@ -48,13 +48,13 @@ class toj {
 		return $response;
 	}
 
-	public function userstat($validtime, $users, $probs=NULL){
+	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
 			$data=$this->fetchstat($validtime, $uid);
-			if(is_array($probs)){
+			if (is_array($probs)) {
 				foreach ($probs as $pid) {
 					$response[$uid][$pid]=$data[$pid];
-					if($response[$uid][$pid]===null)$response[$uid][$pid]='';
+					if ($response[$uid][$pid]===null) $response[$uid][$pid]='';
 				}
 			} else {
 				$response[$uid]=$data;
