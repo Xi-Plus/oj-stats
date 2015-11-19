@@ -3,7 +3,7 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 class toj {
 	private $name='TNFSH Online Judge';
-	private $pattern="/^[1-9]{1}[0-9]*$/i";
+	private $pattern="/^[1-9]{1}[0-9]*$/";
 	private $url='http://toj.tfcis.org';
 	private $api='http://toj.tfcis.org/oj/be/api';
 
