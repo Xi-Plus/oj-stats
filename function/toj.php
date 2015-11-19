@@ -13,44 +13,17 @@ class toj {
 		return $response;
 	}
 
-	public function userinfo($users) {
+	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'INFO','acct_id'=>$uid))->html);
-			$response[$uid]['name']=utf8_decode($data->nick);
-			$response[$uid]['score']=$data->score;
+			$data=$this->fetch($validtime, $uid)['info'];
+			$response[$uid]=$data;
 		}
-		return $response;
-	}
-
-	private function savestat($uid, $stat) {
-		$data['timestamp']=time();
-		$data['stat']=$stat;
-		file_put_contents(__DIR__.'/../cache/toj_'.$uid, json_encode($data));
-	}
-
-	private function readstat($uid) {
-		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid), true);
-		return $data;
-	}
-
-	public function fetchstat($validtime, $uid) {
-		$data=$this->readstat($uid);
-		if($validtime<$data['timestamp'])return $data['stat'];
-		$statslist=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'AC','acct_id'=>$uid))->html)->ac;
-		foreach ($statslist as $pid) {
-			$response[$pid]='AC';
-		}
-		$statslist=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'NA','acct_id'=>$uid))->html)->na;
-		foreach ($statslist as $pid) {
-			$response[$pid]='NA';
-		}
-		$this->savestat($uid, $response);
 		return $response;
 	}
 
 	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
-			$data=$this->fetchstat($validtime, $uid);
+			$data=$this->fetch($validtime, $uid)['stat'];
 			if (is_array($probs)) {
 				foreach ($probs as $pid) {
 					$response[$uid][$pid]=$data[$pid];
@@ -61,6 +34,33 @@ class toj {
 			}
 		}
 		return $response;
+	}
+
+	public function fetch($validtime, $uid) {
+		$data=$this->read($uid);
+		if($validtime<$data['timestamp'])return $data;
+		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'INFO','acct_id'=>$uid))->html,true);
+		$response['info']=$data;
+		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'AC','acct_id'=>$uid))->html,true)['ac'];
+		foreach ($data as $pid) {
+			$response['stat'][$pid]='AC';
+		}
+		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'NA','acct_id'=>$uid))->html,true)['na'];
+		foreach ($data as $pid) {
+			$response['stat'][$pid]='NA';
+		}
+		$this->save($uid, $response);
+		return $response;
+	}
+
+	private function save($uid, $data) {
+		$data['timestamp']=time();
+		file_put_contents(__DIR__.'/../cache/toj_'.$uid, json_encode($data));
+	}
+
+	private function read($uid) {
+		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid), true);
+		return $data;
 	}
 }
 ?>
