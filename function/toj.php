@@ -38,7 +38,7 @@ class toj {
 
 	public function fetch($validtime, $uid) {
 		$data=$this->read($uid);
-		if($validtime<$data['timestamp'])return $data;
+		if($data!==false&&$validtime<$data['timestamp'])return $data;
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'INFO','acct_id'=>$uid))->html,true);
 		$response['info']=$data;
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'AC','acct_id'=>$uid))->html,true)['ac'];
@@ -59,6 +59,8 @@ class toj {
 	}
 
 	private function read($uid) {
+		$data=@file_get_contents(__DIR__.'/../cache/toj_'.$uid.'.dat');
+		if($data===false)return false;
 		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid.'.dat'), true);
 		return $data;
 	}
