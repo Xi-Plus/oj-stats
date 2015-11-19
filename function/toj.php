@@ -33,7 +33,7 @@ class toj {
 		return $data;
 	}
 
-	public function fetchstat($validtime, $uid) {
+	private function fetchstat($validtime, $uid) {
 		$data=$this->readstat($uid);
 		if($validtime<$data['timestamp'])return $data['stat'];
 		$statslist=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'AC','acct_id'=>$uid))->html)->ac;
