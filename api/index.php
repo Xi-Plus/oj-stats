@@ -1,5 +1,10 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
+
+foreach ($_REQUEST as $index => $temp) {
+	$_REQUEST[$index]=urldecode($_REQUEST[$index]);
+}
+
 $response=new stdClass;
 try {
 	if (!isset($_REQUEST['oj'])) {
