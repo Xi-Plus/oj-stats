@@ -1,0 +1,5 @@
+<?php
+$config['curl_path']=__DIR__.'/../function/curl.php';
+$config['available_oj']=array(
+);
+?>
