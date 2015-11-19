@@ -15,26 +15,26 @@ try {
 	require(__DIR__.'/../function/'.$config['available_oj'][$_REQUEST['oj']]);
 	$oj=new $_REQUEST['oj']();
 
+	if (isset($_REQUEST['validtime'])) {
+		if (is_numeric($_REQUEST['validtime'])) {
+			$validtime=$_REQUEST['validtime'];
+		} else {
+			throw new Exception('validtime is not a number');
+		}
+		
+	} else $validtime=time()-3600;
+
 	if ($_REQUEST['field']=='ojinfo') {
 		$response=$oj->ojinfo();
 	} else if ($_REQUEST['field']=='userinfo') {
 		if (!is_array(json_decode($_REQUEST['user']))) {
 			throw new Exception('User is not array');
 		}
-		$response=$oj->userinfo(json_decode($_REQUEST['user']));
+		$response=$oj->userinfo($validtime, json_decode($_REQUEST['user']));
 	} else if($_REQUEST['field']=='userstat'){
 		if (!is_array(json_decode($_REQUEST['user']))) {
 			throw new Exception('User is not array');
 		}
-
-		if (isset($_REQUEST['validtime'])) {
-			if (is_numeric($_REQUEST['validtime'])) {
-				$validtime=$_REQUEST['validtime'];
-			} else {
-				throw new Exception('validtime is not a number');
-			}
-			
-		} else $validtime=time()-3600;
 		
 		if (isset($_REQUEST['prob'])) {
 			if (!is_array(json_decode($_REQUEST['prob']))) {
