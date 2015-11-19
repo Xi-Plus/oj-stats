@@ -27,8 +27,14 @@ try {
 			throw new Exception('User is not array');
 		}
 
-		if(isset($_REQUEST['validtime'])&&is_numeric($_REQUEST['validtime']))$validtime=$_REQUEST['validtime'];
-		else $validtime=time()-3600;
+		if (isset($_REQUEST['validtime'])) {
+			if (is_numeric($_REQUEST['validtime'])) {
+				$validtime=$_REQUEST['validtime'];
+			} else {
+				throw new Exception('validtime is not a number');
+			}
+			
+		} else $validtime=time()-3600;
 		
 		if (isset($_REQUEST['prob'])) {
 			if (!is_array(json_decode($_REQUEST['prob']))) {
