@@ -47,8 +47,10 @@ class zj {
 			$data=cURL_HTTP_Request('http://zerojudge.tw/Login',null,false,true)->html;
 			if (preg_match('/name="token" value="([^"]+)/',$data,$res)) {
                 $token=$res[1];
-                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>'tester123123','passwd'=>'123123','returnPage'=>'/','token'=>$token),false,true)->html;
-				var_dump($data);
+                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>'tester123123','passwd'=>'123123','returnPage'=>'/','token'=>$token),false,true);
+                if ($data===false) {
+                	throw new Exception('Zerojudge login fail');
+                }
             } else {
             	throw new Exception('Zerojudge login fail');
             }
