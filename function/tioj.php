@@ -41,7 +41,7 @@ class tioj {
 		}
 	}
 
-	public function fetch($validtime, $uid) {
+	private function fetch($validtime, $uid) {
 		$data=$this->read($uid);
 		if ($data!==false&&$validtime<$data['timestamp']) return $data;
 		$response=$data;
