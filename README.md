@@ -13,8 +13,8 @@ Fetch from `/api` via http GET/POST with following arguments.
 #### Arguments
 | Arguments | Description | Type |
 |-----------|-------------------|---|
-| field <br> `Essential` | View [here](README.md#Method). | String |
-| oj <br> `Essential` | Online judge name. View [here](README.md#oj). | String |
+| field <br> `Essential` | View [here](README.md#method). | String |
+| oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
 | user <br> `Essential` | User ID list. | Array String |
 | prob <br> `Optional` | Problem ID list. | Array String |
 | validtime <br> `Optional` | Valid time. If this time after last fetch time, it will be updated. Default is 3600 seconds ago. | Unix timestamp String |
