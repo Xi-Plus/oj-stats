@@ -47,10 +47,6 @@ class tioj {
 		$response=$data;
 		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid,null,false,true)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
-		$count=1;
-		while ($count) {
-			$data=str_replace(array("  ")," ",$data,$count);
-		}
 		if (preg_match('/<h5>(.+?)<\/h5> <h6>.*?AC Ratio: <\/div> <div class="col-md-5"> (\d+?)<br> (\d+?)<br> (.+?)%.*?Signed up at: (.+?)<br> Last sign in: (.+?)<br>/', $data, $match)) {
 			$response['info']['name']=$match[1];
 			$response['info']['totalcount']['AC']=$match[2];
