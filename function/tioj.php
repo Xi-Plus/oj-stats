@@ -2,7 +2,7 @@
 require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 class tioj {
-	private $name='建中OJ';
+	private $name='TIOJ Infor Online Judge';
 	private $pattern="/^[1-9]{1}[0-9]{3}$/";
 	private $url='http://tioj.ck.tp.edu.tw';
 
