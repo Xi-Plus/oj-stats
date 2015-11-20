@@ -1,5 +1,6 @@
 <?php
 $config['curl_path']=__DIR__.'/../function/curl.php';
+$config['valid_time']=3600;
 $config['available_oj']=array(
 	'toj'=>'toj.php',
 	'zj'=>'zj.php',

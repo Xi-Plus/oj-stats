@@ -27,7 +27,7 @@ try {
 			throw new Exception('validtime is not a number');
 		}
 		
-	} else $validtime=time()-3600;
+	} else $validtime=time()-$config['valid_time'];
 
 	if ($_REQUEST['field']=='ojinfo') {
 		$response=$oj->ojinfo();

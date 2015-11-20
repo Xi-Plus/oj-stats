@@ -17,7 +17,7 @@ Fetch from `/api` via http GET/POST with following arguments.
 | oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
 | user <br> `Essential` | User ID list. | Array String |
 | prob <br> `Optional` | Problem ID list. | Array String |
-| validtime <br> `Optional` | Valid time. If this time after last fetch time, it will be updated. Default is 3600 seconds ago. | Unix timestamp String |
+| validtime <br> `Optional` | Valid time. If this time after last fetch time, it will be updated. Default is setting in `config/config.php`. | Unix timestamp String |
 
 #### Method
 | field | Description | Usage |
