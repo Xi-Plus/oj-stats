@@ -1,7 +1,9 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
+require_once(__DIR__.'/global.php');
 class poj {
+	private $ojid='poj';
 	private $name='PKU JudgeOnline';
 	public $pattern="/^[1-9]{1}[0-9]{3}$/";
 	private $url='http://poj.org';
@@ -35,12 +37,8 @@ class poj {
 		return $response;
 	}
 
-	public function checkpid($pid){
-		if (!preg_match($this->pattern, $pid)) throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
-	}
-
 	private function fetch($validtime, $uid) {
-		$data=$this->read($uid);
+		$data=(new cache)->read($this->ojid, $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid,null,false,true)->html;
@@ -69,20 +67,8 @@ class poj {
 				}
 			}
 		}
-		$this->save($uid, $response);
+		(new cache)->write($this->ojid, $uid, $response);
 		return $response;
-	}
-
-	private function save($uid, $data) {
-		$data['timestamp']=time();
-		file_put_contents(__DIR__.'/../cache/poj_'.$uid.'.dat', json_encode($data));
-	}
-
-	private function read($uid) {
-		$data=@file_get_contents(__DIR__.'/../cache/poj_'.$uid.'.dat');
-		if($data===false)return false;
-		$data=json_decode($data, true);
-		return $data;
 	}
 }
 ?>

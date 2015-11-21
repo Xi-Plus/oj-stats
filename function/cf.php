@@ -1,7 +1,9 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
+require_once(__DIR__.'/global.php');
 class cf {
+	private $ojid='cf';
 	private $name='Codeforces';
 	public $pattern="/^[0-9]+[A-Z]{1}$/";
 	private $url='http://codeforces.com/';
@@ -35,11 +37,6 @@ class cf {
 		}
 		return $response;
 	}
-
-	public function checkpid($pid){
-		if (!preg_match($this->pattern, $pid)) return true;
-		else return false;
-	}
 	
 	private $verdictlist=array(
 		'OK'=>'AC',
@@ -69,7 +66,7 @@ class cf {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=$this->read($uid);
+		$data=(new cache)->read($this->ojid, $uid);
 		if($data!==false&&time()-$validtime<$data['timestamp'])return $data;
 		$data=json_decode(cURL_HTTP_Request($this->api.'user.info?handles='.$uid)->html,true)['result'][0];
 		$response['info']=$data;
@@ -78,20 +75,8 @@ class cf {
 			$pid=$temp['problem']['contestId'].$temp['problem']['index'];
 			$response['stat'][$pid]=$this->changestat($response['stat'][$pid],$temp['verdict']);
 		}
-		$this->save($uid, $response);
+		(new cache)->write($this->ojid, $uid, $response);
 		return $response;
-	}
-
-	private function save($uid, $data) {
-		$data['timestamp']=time();
-		file_put_contents(__DIR__.'/../cache/cf_'.$uid.'.dat', json_encode($data));
-	}
-
-	private function read($uid) {
-		$data=@file_get_contents(__DIR__.'/../cache/cf_'.$uid.'.dat');
-		if($data===false)return false;
-		$data=json_decode(file_get_contents(__DIR__.'/../cache/toj_'.$uid.'.dat'), true);
-		return $data;
 	}
 }
 ?>

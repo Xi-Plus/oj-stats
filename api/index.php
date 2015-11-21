@@ -4,7 +4,6 @@ require_once(__DIR__.'/../config/config.php');
 foreach ($_REQUEST as $index => $temp) {
 	$_REQUEST[$index]=urldecode($_REQUEST[$index]);
 }
-$_REQUEST['user']=strtolower($_REQUEST['user']);
 
 $response=new stdClass;
 try {
@@ -47,7 +46,7 @@ try {
 				throw new Exception('Prob is not array');
 			}
 			foreach (json_decode($_REQUEST['prob'], true) as $pid) {
-				if ($oj->checkpid($pid)) {
+				if (!preg_match($oj->pattern, $pid)){
 					throw new Exception('Prob ('.$pid.') not match pattern ('.$oj->pattern.')');
 				}
 			}

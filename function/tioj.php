@@ -1,7 +1,9 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
+require_once(__DIR__.'/global.php');
 class tioj {
+	private $ojid='tioj';
 	private $name='TIOJ Infor Online Judge';
 	public $pattern="/^[1-9]{1}[0-9]{3}$/";
 	private $url='http://tioj.ck.tp.edu.tw';
@@ -35,12 +37,8 @@ class tioj {
 		return $response;
 	}
 
-	public function checkpid($pid){
-		if (!preg_match($this->pattern, $pid)) throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
-	}
-
 	private function fetch($validtime, $uid) {
-		$data=$this->read($uid);
+		$data=(new cache)->read($this->ojid, $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid,null,false,true)->html;
@@ -63,25 +61,8 @@ class tioj {
 				$response['stat'][$pid]='NA';
 			}
 		}
-		if (preg_match_all('/<a class="text-muted".*?>(\d+?)<\/a>/', $data, $match)) {
-			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='';
-			}
-		}
-		$this->save($uid, $response);
+		(new cache)->write($this->ojid, $uid, $response);
 		return $response;
-	}
-
-	private function save($uid, $data) {
-		$data['timestamp']=time();
-		file_put_contents(__DIR__.'/../cache/tioj_'.$uid.'.dat', json_encode($data));
-	}
-
-	private function read($uid) {
-		$data=@file_get_contents(__DIR__.'/../cache/tioj_'.$uid.'.dat');
-		if($data===false)return false;
-		$data=json_decode($data, true);
-		return $data;
 	}
 }
 ?>

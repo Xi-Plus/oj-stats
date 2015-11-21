@@ -1,7 +1,9 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
+require_once(__DIR__.'/global.php');
 class zj {
+	private $ojid='zj';
 	private $name='ZeroJudge';
 	public $pattern="/^[a-z]{1}[0-9]{3}$/";
 	private $url='http://zerojudge.tw';
@@ -35,10 +37,6 @@ class zj {
 		return $response;
 	}
 
-	public function checkpid($pid){
-		if (!preg_match($this->pattern, $pid)) throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
-	}
-
 	private function login() {
 		global $config;
 		$data=cURL_HTTP_Request('http://zerojudge.tw/UserStatistic',null,false,true);
@@ -46,7 +44,7 @@ class zj {
 			$data=cURL_HTTP_Request('http://zerojudge.tw/Login',null,false,true)->html;
 			if (preg_match('/name="token" value="([^"]+)/',$data,$res)) {
                 $token=$res[1];
-                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>$config['login']['zj'][0]['acct'],'passwd'=>$config['login']['zj'][0]['pass'],'returnPage'=>'/','token'=>$token),false,true);
+                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>$config['login']['zj']['acct'],'passwd'=>$config['login']['zj']['pass'],'returnPage'=>'/','token'=>$token),false,true);
                 if ($data===false) {
                 	throw new Exception('Zerojudge login fail');
                 }
@@ -58,7 +56,7 @@ class zj {
 
 	private function fetch($validtime, $uid) {
 		$this->login();
-		$data=$this->read($uid);
+		$data=(new cache)->read($this->ojid, $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request("http://zerojudge.tw/UserStatistic?account=".$uid,null,false,true)->html;
@@ -92,25 +90,8 @@ class zj {
 				$response['stat'][$pid]='NA';
 			}
 		}
-		if (preg_match_all('/style="color: #666666".*?>(.+?)<\/a>/', $data, $match)) {
-			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='';
-			}
-		}
-		$this->save($uid, $response);
+		(new cache)->write($this->ojid, $uid, $response);
 		return $response;
-	}
-
-	private function save($uid, $data) {
-		$data['timestamp']=time();
-		file_put_contents(__DIR__.'/../cache/zj_'.$uid.'.dat', json_encode($data));
-	}
-
-	private function read($uid) {
-		$data=@file_get_contents(__DIR__.'/../cache/zj_'.$uid.'.dat');
-		if($data===false)return false;
-		$data=json_decode($data, true);
-		return $data;
 	}
 }
 ?>
