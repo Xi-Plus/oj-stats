@@ -2,7 +2,7 @@
 require_once(__DIR__.'/../config/config.php');
 
 foreach ($_REQUEST as $index => $temp) {
-	$_REQUEST[$index]=urldecode($_REQUEST[$index]);
+	$_REQUEST[$index]=strtolower(urldecode($_REQUEST[$index]));
 }
 
 $response=new stdClass;
@@ -27,7 +27,7 @@ try {
 			throw new Exception('validtime is not a number');
 		}
 		
-	} else $validtime=time()-$config['valid_time'];
+	} else $validtime=3600;
 
 	if ($_REQUEST['field']=='ojinfo') {
 		$response=$oj->ojinfo();
