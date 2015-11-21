@@ -41,7 +41,7 @@ class tioj {
 		$data=(new cache)->read($this->ojid, $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
-		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid,null,false,true)->html;
+		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<h5>(.+?)<\/h5> <h6>.*?AC Ratio: <\/div> <div class="col-md-5"> (\d+?)<br> (\d+?)<br> (.+?)%.*?Signed up at: (.+?)<br> Last sign in: (.+?)<br>/', $data, $match)) {
 			$response['info']['name']=$match[1];
