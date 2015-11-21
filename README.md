@@ -35,4 +35,5 @@ Fetch from `/api` via http GET/POST with following arguments.
 | poj | PKU JudgeOnline | http://poj.org | Your login `User ID` |
 | tioj | TIOJ Infor Online Judge | http://tioj.ck.tp.edu.tw | Your login `Username` |
 | toj | TNFSH Online Judge | http://toj.tfcis.org | View [here](http://toj.tfcis.org/oj/chal/) to find your `ID` |
+| tzj | TNFSH Judge | http://judge.tnfsh.tn.edu.tw:8080 | Your login `Account` |
 | zj | ZeroJudge | http://zerojudge.tw | Your login `Account` |
