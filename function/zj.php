@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class zj {
 	private $ojid='zj';
 	private $name='ZeroJudge';
-	public $pattern="/^[a-z]{1}[0-9]{3}$/";
+	public $pattern='[a-z]{1}[0-9]{3}';
 	private $url='http://zerojudge.tw';
 
 	public function ojinfo() {

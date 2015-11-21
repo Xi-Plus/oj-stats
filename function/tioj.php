@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class tioj {
 	private $ojid='tioj';
 	private $name='TIOJ Infor Online Judge';
-	public $pattern="/^[1-9]{1}[0-9]{3}$/";
+	public $pattern='[1-9]{1}[0-9]{3}';
 	private $url='http://tioj.ck.tp.edu.tw';
 
 	public function ojinfo() {
@@ -51,12 +51,12 @@ class tioj {
 			$response['info']['signup']=$match[5];
 			$response['info']['lastlogin']=$match[6];
 		}
-		if (preg_match_all('/<a class="text-success".*?>(\d+?)<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a class="text-success".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='AC';
 			}
 		}
-		if (preg_match_all('/<a class="text-warning".*?>(\d+?)<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a class="text-warning".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='NA';
 			}

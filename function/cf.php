@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class cf {
 	private $ojid='cf';
 	private $name='Codeforces';
-	public $pattern="/^[0-9]+[A-Z]{1}$/";
+	public $pattern='[0-9]+[A-Z]{1}';
 	private $url='http://codeforces.com/';
 	private $api='http://codeforces.com/api/';
 

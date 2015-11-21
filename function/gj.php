@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class gj {
 	private $ojid='gj';
 	private $name='Green Judge, An Online Judge System for TCGS';
-	public $pattern="/^[a-z]{1}[0-9]{3}$/";
+	public $pattern='[a-z]{1}[0-9]{3}';
 	private $url='http://www.tcgs.tc.edu.tw:1218';
 
 	public function ojinfo() {
@@ -66,12 +66,12 @@ class gj {
 			$response['info']['totalcount']['submit']=$match[15];
 			$response['info']['rank']=$match[16];
 		}
-		if (preg_match_all('/<a.*?id="acstyle".*?>([a-z]{1}\d{3})<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='AC';
 			}
 		}
-		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>([a-z]{1}\d{3})<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='NA';
 			}

@@ -46,7 +46,7 @@ try {
 				throw new Exception('Prob is not array');
 			}
 			foreach (json_decode($_REQUEST['prob'], true) as $pid) {
-				if (!preg_match($oj->pattern, $pid)){
+				if (!preg_match('/^'.$oj->pattern.'$/', $pid)){
 					throw new Exception('Prob ('.$pid.') not match pattern ('.$oj->pattern.')');
 				}
 			}

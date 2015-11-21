@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class toj {
 	private $ojid='toj';
 	private $name='TNFSH Online Judge';
-	public $pattern="/^[1-9]{1}[0-9]*$/";
+	public $pattern='[1-9]{1}[0-9]*';
 	private $url='http://toj.tfcis.org';
 	private $api='http://toj.tfcis.org/oj/be/api';
 
