@@ -30,6 +30,7 @@ Fetch from `/api` via http GET/POST with following arguments.
 | OJ id | OJ name | Link | User ID |
 |-----------|-------------------|---|---|
 | cf | Codeforces | http://codeforces.com | Your login `Handle` |
+| gj | Green Judge | http://www.tcgs.tc.edu.tw:1218 | Your login `Account` |
 | hdu | HDU Online Judge | http://acm.hdu.edu.cn | Your login `Author ID` |
 | poj | PKU JudgeOnline | http://poj.org | Your login `User ID` |
 | tioj | TIOJ Infor Online Judge | http://tioj.ck.tp.edu.tw | Your login `Username` |

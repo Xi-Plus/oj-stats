@@ -3,6 +3,7 @@ $config['curl_path']=__DIR__.'/../function/curl.php';
 $config['valid_time']=3600;
 $config['available_oj']=array(
 	'cf'=>'cf.php',
+	'gj'=>'gj.php',
 	'hdu'=>'hdu.php',
 	'poj'=>'poj.php',
 	'tioj'=>'tioj.php',
