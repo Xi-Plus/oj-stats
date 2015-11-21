@@ -3,7 +3,7 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 class cf {
 	private $name='Codeforces';
-	private $pattern="/^[0-9]+[A-Z]{1}$/";
+	public $pattern="/^[0-9]+[A-Z]{1}$/";
 	private $url='http://codeforces.com/';
 	private $api='http://codeforces.com/api/';
 	private $verdictlist=array(
@@ -45,11 +45,9 @@ class cf {
 		return $response;
 	}
 
-	public function checkpid($prob){
-		foreach ($prob as $pid) {
-			if (!preg_match($this->pattern, $pid)) return true;
-		}
-		return false;
+	public function checkpid($pid){
+		if (!preg_match($this->pattern, $pid)) return true;
+		else return false;
 	}
 
 	private function fetch($validtime, $uid) {

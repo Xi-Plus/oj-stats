@@ -3,7 +3,7 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 class zj {
 	private $name='ZeroJudge';
-	private $pattern="/^[a-z]{1}[0-9]{3}$/";
+	public $pattern="/^[a-z]{1}[0-9]{3}$/";
 	private $url='http://zerojudge.tw';
 
 	public function ojinfo() {
@@ -35,10 +35,8 @@ class zj {
 		return $response;
 	}
 
-	public function checkpid($prob){
-		foreach ($prob as $pid) {
-			if (!preg_match($this->pattern, $pid)) throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
-		}
+	public function checkpid($pid){
+		if (!preg_match($this->pattern, $pid)) throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
 	}
 
 	private function login() {

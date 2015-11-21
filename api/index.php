@@ -2,8 +2,9 @@
 require_once(__DIR__.'/../config/config.php');
 
 foreach ($_REQUEST as $index => $temp) {
-	$_REQUEST[$index]=strtolower(urldecode($_REQUEST[$index]));
+	$_REQUEST[$index]=urldecode($_REQUEST[$index]);
 }
+$_REQUEST['user']=strtolower($_REQUEST['user']);
 
 $response=new stdClass;
 try {
@@ -42,11 +43,13 @@ try {
 		}
 		
 		if (isset($_REQUEST['prob'])) {
-			if (!is_array(json_decode($_REQUEST['prob']))) {
+			if (!is_array(json_decode($_REQUEST['prob'], true))) {
 				throw new Exception('Prob is not array');
 			}
-			if ($oj->checkpid(json_decode($_REQUEST['prob']))) {
-				throw new Exception('Prob ('.$pid.') not match pattern ('.$this->pattern.')');
+			foreach (json_decode($_REQUEST['prob'], true) as $pid) {
+				if ($oj->checkpid($pid)) {
+					throw new Exception('Prob ('.$pid.') not match pattern ('.$oj->pattern.')');
+				}
 			}
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']), json_decode($_REQUEST['prob']));
 		} else {
