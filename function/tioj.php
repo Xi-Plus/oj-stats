@@ -43,7 +43,7 @@ class tioj {
 
 	private function fetch($validtime, $uid) {
 		$data=$this->read($uid);
-		if ($data!==false&&$validtime<$data['timestamp']) return $data;
+		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid,null,false,true)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
