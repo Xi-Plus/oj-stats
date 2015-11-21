@@ -29,7 +29,8 @@ Fetch from `/api` via http GET/POST with following arguments.
 #### Supported OJ
 | OJ id | OJ name | Link | User ID |
 |-----------|-------------------|---|---|
-| cf | Codeforces | http://codeforces.com/ | Your login `Handle` |
+| cf | Codeforces | http://codeforces.com | Your login `Handle` |
+| hdu | HDU Online Judge | http://acm.hdu.edu.cn | Your login `Author ID` |
 | poj | PKU JudgeOnline | http://poj.org | Your login `User ID` |
 | tioj | TIOJ Infor Online Judge | http://tioj.ck.tp.edu.tw | Your login `Username` |
 | toj | TNFSH Online Judge | http://toj.tfcis.org | View [here](http://toj.tfcis.org/oj/chal/) to find your `ID` |
