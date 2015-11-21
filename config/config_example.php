@@ -9,6 +9,7 @@ $config['available_oj']=array(
 	'tioj'=>'tioj.php',
 	'toj'=>'toj.php',
 	'tzj'=>'tzj.php',
+	'uva'=>'uva.php',
 	'zj'=>'zj.php'
 );
 $config['login']['zj']=array('acct'=>'acct','pass'=>'pass');
