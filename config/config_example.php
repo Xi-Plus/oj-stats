@@ -8,4 +8,5 @@ $config['available_oj']=array(
 	'toj'=>'toj.php',
 	'zj'=>'zj.php'
 );
+$config['login']['zj']=array('acct'=>'acct','pass'=>'pass');
 ?>
