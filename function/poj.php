@@ -41,7 +41,7 @@ class poj {
 		$data=(new cache)->read($this->ojid, $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
-		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid,null,false,true)->html;
+		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/'.$uid.'--(.+?) <\/a>.*?Last Loginned Time:(.+?)<br>.*?Solved:<\/td>.*?>(\d+?)<\/a>.*?Submissions:<\/td>.*?>(\d+?)<\/a>.*?School:<\/td>.*?>(.+?) <\/td>.*?Email:<\/td>.*?>(.+?) <\/td>/', $data, $match)) {
 			$response['info']['name']=$match[1];
@@ -51,7 +51,7 @@ class poj {
 			$response['info']['school']=$match[5];
 			$response['info']['email']=$match[6];
 		}
-		$data=cURL_HTTP_Request('http://poj.org/usercmp?uid1='.$uid.'&uid2='.$uid,null,false,true)->html;
+		$data=cURL_HTTP_Request('http://poj.org/usercmp?uid1='.$uid.'&uid2='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/Problems both.*?accepted(.+?)Problems only.*?tried but failed/', $data, $match)) {
 			if (preg_match_all('/<a href.*?>(\d+?) <\/a>/', $match[1], $match2)) {
