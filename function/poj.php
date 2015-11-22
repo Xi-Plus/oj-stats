@@ -3,15 +3,15 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class poj {
-	private $ojid='poj';
-	private $name='PKU JudgeOnline';
-	public $pattern='[1-9]{1}[0-9]{3}';
-	private $url='http://poj.org';
+	private $info=array(
+		'id'=>'poj',
+		'PKU JudgeOnline',
+		'pattern'=>'[1-9]{1}[0-9]{3}',
+		'url'=>'http://poj.org'
+	);
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -38,7 +38,7 @@ class poj {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid)->html;
@@ -54,20 +54,20 @@ class poj {
 		$data=cURL_HTTP_Request('http://poj.org/usercmp?uid1='.$uid.'&uid2='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/Problems both.*?accepted(.+?)Problems only.*?tried but failed/', $data, $match)) {
-			if (preg_match_all('/<a href.*?>('.$this->pattern.') <\/a>/', $match[1], $match2)) {
+			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]='AC';
 				}
 			}
 		}
 		if (preg_match('/Problems both.*?tried but failed(.+?)Home Page/', $data, $match)) {
-			if (preg_match_all('/<a href.*?>('.$this->pattern.') <\/a>/', $match[1], $match2)) {
+			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]='NA';
 				}
 			}
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

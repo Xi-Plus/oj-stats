@@ -3,15 +3,15 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class zj {
-	private $ojid='zj';
-	private $name='ZeroJudge';
-	public $pattern='[a-z]{1}[0-9]{3}';
-	private $url='http://zerojudge.tw';
+	private $info=array(
+		'id'=>'zj',
+		'ZeroJudge',
+		'pattern'=>'[a-z]{1}[0-9]{3}',
+		'url'=>'http://zerojudge.tw'
+	);
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -56,7 +56,7 @@ class zj {
 
 	private function fetch($validtime, $uid) {
 		$this->login();
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request("http://zerojudge.tw/UserStatistic?account=".$uid,null,false,true)->html;
@@ -90,7 +90,7 @@ class zj {
 				$response['stat'][$pid]='NA';
 			}
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

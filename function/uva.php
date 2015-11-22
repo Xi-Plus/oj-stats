@@ -3,16 +3,16 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class uva {
-	private $ojid='uva';
-	private $name='UVa Online Judge';
-	public $pattern='[1-9]+[0-9]*';
-	private $url='https://uva.onlinejudge.org';
+	private $info=array(
+		'id'=>'uva',
+		'UVa Online Judge',
+		'pattern'=>'[1-9]+[0-9]*',
+		'url'=>'https://uva.onlinejudge.org'
+	);
 	private $api='http://uhunt.felix-halim.net/api/';
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -28,8 +28,8 @@ class uva {
 			$data=$this->fetch($validtime, $uid)['stat'];
 			if (is_array($probs)) {
 				foreach ($probs as $pid) {
-					$response[$uid][$pid]=$data[$pid];
-					if ($response[$uid][$pid]===null) $response[$uid][$pid]='';
+					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
+					else $response[$uid][$pid]='';
 				}
 			} else {
 				$response[$uid]=$data;
@@ -75,7 +75,7 @@ class uva {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$uid=cURL_HTTP_Request($this->api.'uname2uid/'.$uid)->html;
 		if ($uid==0) throw new Exception('User not found');
@@ -85,7 +85,7 @@ class uva {
 			$pid=$temp[1];
 			$response['stat'][$pid]=$this->changestat($response['stat'][$pid],$temp[2]);
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

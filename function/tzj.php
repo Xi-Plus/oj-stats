@@ -3,15 +3,15 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class tzj {
-	private $ojid='tzj';
-	private $name='Online Judge System For TNFSH';
-	public $pattern='[a-z]{1}[0-9]{3}';
-	private $url='http://judge.tnfsh.tn.edu.tw:8080';
+	private $info=array(
+		'id'=>'tzj',
+		'Online Judge System For TNFSH',
+		'pattern'=>'[a-z]{1}[0-9]{3}',
+		'url'=>'http://judge.tnfsh.tn.edu.tw:8080'
+	);
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -38,7 +38,7 @@ class tzj {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request("http://judge.tnfsh.tn.edu.tw:8080/ShowUserStatistic?account=".$uid)->html;
@@ -66,17 +66,17 @@ class tzj {
 			$response['info']['totalcount']['submit']=$match[15];
 			$response['info']['rank']=$match[16];
 		}
-		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='AC';
 			}
 		}
-		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>('.$this->pattern.')<\/a>/', $data, $match)) {
+		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='NA';
 			}
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

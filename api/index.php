@@ -46,8 +46,8 @@ try {
 				throw new Exception('Prob is not array');
 			}
 			foreach (json_decode($_REQUEST['prob'], true) as $pid) {
-				if (!preg_match('/^'.$oj->pattern.'$/', $pid)){
-					throw new Exception('Prob ('.$pid.') not match pattern ('.$oj->pattern.')');
+				if (!preg_match('/^'.$oj->ojinfo()['pattern'].'$/', $pid)){
+					throw new Exception('Prob ('.$pid.') not match pattern ('.$oj->ojinfo()['pattern'].')');
 				}
 			}
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']), json_decode($_REQUEST['prob']));

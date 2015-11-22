@@ -3,15 +3,15 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class hdu {
-	private $ojid='hdu';
-	private $name='HDU Online Judge';
-	public $pattern='[1-9]{1}[0-9]{3}';
-	private $url='http://acm.hdu.edu.cn';
+	private $info=array(
+		'id'=>'hdu',
+		'HDU Online Judge',
+		'pattern'=>'[1-9]{1}[0-9]{3}',
+		'url'=>'http://acm.hdu.edu.cn'
+	);
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -38,7 +38,7 @@ class hdu {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request('http://acm.hdu.edu.cn/userstatus.php?user='.$uid)->html;
@@ -54,20 +54,20 @@ class hdu {
 			$response['info']['totalcount']['AC']=$match[8];
 		}
 		if (preg_match('/List of solved problems(.+?)List of unsolved problems/', $data, $match)) {
-			if (preg_match_all('/p\(('.$this->pattern.'),\d+,\d+\)/', $match[1], $match2)) {
+			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]='AC';
 				}
 			}
 		}
 		if (preg_match('/List of unsolved problems(.+?)Neighbours/', $data, $match)) {
-			if (preg_match_all('/p\(('.$this->pattern.'),\d+,\d+\)/', $match[1], $match2)) {
+			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]='NA';
 				}
 			}
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

@@ -3,16 +3,16 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class toj {
-	private $ojid='toj';
-	private $name='TNFSH Online Judge';
-	public $pattern='[1-9]{1}[0-9]*';
-	private $url='http://toj.tfcis.org';
+	private $info=array(
+		'id'=>'toj',
+		'name'=>'TNFSH Online Judge',
+		'pattern'=>'[1-9]{1}[0-9]*',
+		'url'=>'http://toj.tfcis.org',
+	);
 	private $api='http://toj.tfcis.org/oj/be/api';
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -28,8 +28,8 @@ class toj {
 			$data=$this->fetch($validtime, $uid)['stat'];
 			if (is_array($probs)) {
 				foreach ($probs as $pid) {
-					$response[$uid][$pid]=$data[$pid];
-					if ($response[$uid][$pid]===null) $response[$uid][$pid]='';
+					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
+					else $response[$uid][$pid]='';
 				}
 			} else {
 				$response[$uid]=$data;
@@ -39,7 +39,7 @@ class toj {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if($data!==false&&time()-$validtime<$data['timestamp'])return $data;
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'INFO','acct_id'=>$uid))->html,true);
 		$response['info']=$data;
@@ -51,7 +51,7 @@ class toj {
 		foreach ($data as $pid) {
 			$response['stat'][$pid]='NA';
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

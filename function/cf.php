@@ -3,16 +3,16 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class cf {
-	private $ojid='cf';
-	private $name='Codeforces';
-	public $pattern='[0-9]+[A-Z]{1}';
-	private $url='http://codeforces.com/';
+	private $info=array(
+		'id'=>'cf',
+		'name'=>'Codeforces',
+		'pattern'=>'[0-9]+[A-Z]{1}',
+		'url'=>'http://codeforces.com'
+	);
 	private $api='http://codeforces.com/api/';
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -28,8 +28,8 @@ class cf {
 			$data=$this->fetch($validtime, $uid)['stat'];
 			if (is_array($probs)) {
 				foreach ($probs as $pid) {
-					$response[$uid][$pid]=$data[$pid];
-					if ($response[$uid][$pid]===null) $response[$uid][$pid]='';
+					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
+					else $response[$uid][$pid]='';
 				}
 			} else {
 				$response[$uid]=$data;
@@ -66,7 +66,7 @@ class cf {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if($data!==false&&time()-$validtime<$data['timestamp'])return $data;
 		$data=json_decode(cURL_HTTP_Request($this->api.'user.info?handles='.$uid)->html,true)['result'][0];
 		$response['info']=$data;
@@ -75,7 +75,7 @@ class cf {
 			$pid=$temp['problem']['contestId'].$temp['problem']['index'];
 			$response['stat'][$pid]=$this->changestat($response['stat'][$pid],$temp['verdict']);
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }

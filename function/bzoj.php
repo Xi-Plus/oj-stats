@@ -3,15 +3,15 @@ require_once(__DIR__.'/../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
 class bzoj {
-	private $ojid='bzoj';
-	private $name='大视野在线测评';
-	public $pattern='[1-9]{1}[0-9]{3}';
-	private $url='http://www.lydsy.com/JudgeOnline';
+	private $info=array(
+		'id'=>'bzoj',
+		'name'=>'大视野在线测评',
+		'pattern'=>'[1-9]{1}[0-9]{3}',
+		'url'=>'http://www.lydsy.com/JudgeOnline',
+	);
 
 	public function ojinfo() {
-		$response['name']=$this->name;
-		$response['url']=$this->url;
-		return $response;
+		return $this->info;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -38,7 +38,7 @@ class bzoj {
 	}
 
 	private function fetch($validtime, $uid) {
-		$data=(new cache)->read($this->ojid, $uid);
+		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=$data;
 		$data=cURL_HTTP_Request('http://www.lydsy.com/JudgeOnline/userinfo.php?user='.$uid)->html;
@@ -51,12 +51,12 @@ class bzoj {
 			$response['info']['school']=$match[5];
 			$response['info']['email']=$match[6];
 		}
-		if (preg_match_all('/p\(('.$this->pattern.')\)/', $data, $match)) {
+		if (preg_match_all('/p\(('.$this->info['pattern'].')\)/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]='AC';
 			}
 		}
-		(new cache)->write($this->ojid, $uid, $response);
+		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
 	}
 }
