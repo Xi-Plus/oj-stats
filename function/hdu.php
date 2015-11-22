@@ -14,6 +14,18 @@ class hdu {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://acm.hdu.edu.cn/showproblem.php?pid='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://acm.hdu.edu.cn/userstatus.php?user='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://acm.hdu.edu.cn/status.php?pid='.$pid.'&user='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
 			$data=$this->fetch($validtime, $uid)['info'];
@@ -24,15 +36,7 @@ class hdu {
 
 	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['stat'];
-			if (is_array($probs)) {
-				foreach ($probs as $pid) {
-					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
-					else $response[$uid][$pid]='';
-				}
-			} else {
-				$response[$uid]=$data;
-			}
+			$response[$uid]=$this->fetch($validtime, $uid)['stat'];
 		}
 		return $response;
 	}
@@ -40,7 +44,7 @@ class hdu {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request('http://acm.hdu.edu.cn/userstatus.php?user='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<h1.*?>(.+?)<\/h1>.*?>from: (.+?)&nbsp;.*?registered on (.+?)<.*?>Rank<.*?>(\d+?)<.*?>Problems Submitted<.*?>(\d+?)<.*?>Problems Solved<.*?>(\d+?)<.*?>Submissions<.*?>(\d+?)<.*?>Accepted<.*?>(\d+?)<\/td>/', $data, $match)) {
@@ -56,14 +60,14 @@ class hdu {
 		if (preg_match('/List of solved problems(.+?)List of unsolved problems/', $data, $match)) {
 			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
-					$response['stat'][$pid]='AC';
+					$response['stat'][$pid]['status']='AC';
 				}
 			}
 		}
 		if (preg_match('/List of unsolved problems(.+?)Neighbours/', $data, $match)) {
 			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
-					$response['stat'][$pid]='NA';
+					$response['stat'][$pid]['status']='NA';
 				}
 			}
 		}

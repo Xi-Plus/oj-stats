@@ -15,10 +15,21 @@ class toj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://toj.tfcis.org/oj/pro/'.$pid.'/';
+	}
+
+	public function userlink($uid) {
+		return 'http://toj.tfcis.org/oj/acct/'.$uid.'/';
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://toj.tfcis.org/oj/chal/?proid='.$pid.'&acctid='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -45,11 +56,11 @@ class toj {
 		$response['info']=$data;
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'AC','acct_id'=>$uid))->html,true)['ac'];
 		foreach ($data as $pid) {
-			$response['stat'][$pid]='AC';
+			$response['stat'][$pid]['status']='AC';
 		}
 		$data=json_decode(cURL_HTTP_Request($this->api,array('reqtype'=>'NA','acct_id'=>$uid))->html,true)['na'];
 		foreach ($data as $pid) {
-			$response['stat'][$pid]='NA';
+			$response['stat'][$pid]['status']='NA';
 		}
 		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;

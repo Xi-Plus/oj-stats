@@ -14,6 +14,18 @@ class bzoj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://www.lydsy.com/JudgeOnline/problem.php?id='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://www.lydsy.com/JudgeOnline/userinfo.php?user='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://www.lydsy.com/JudgeOnline/status.php?problem_id='.$pid.'&user_id='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
 			$data=$this->fetch($validtime, $uid)['info'];
@@ -22,17 +34,9 @@ class bzoj {
 		return $response;
 	}
 
-	public function userstat($validtime, $users, $probs=NULL) {
+	public function userstat($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['stat'];
-			if (is_array($probs)) {
-				foreach ($probs as $pid) {
-					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
-					else $response[$uid][$pid]='';
-				}
-			} else {
-				$response[$uid]=$data;
-			}
+			$response[$uid]=$this->fetch($validtime, $uid)['stat'];
 		}
 		return $response;
 	}
@@ -40,7 +44,7 @@ class bzoj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request('http://www.lydsy.com/JudgeOnline/userinfo.php?user='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<caption>.*?--(.+?)<\/caption><.*?>No\.<.*?>(\d+?)<.*?>Solved<.*?>(\d+?)<\/a><.*?>Submit<.*?>(\d+?)<.*?>School:<.*?>(.*?)<\/tr><.*?>Email:<.*?>(.*?)<\/tr>/', $data, $match)) {
@@ -53,7 +57,7 @@ class bzoj {
 		}
 		if (preg_match_all('/p\(('.$this->info['pattern'].')\)/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='AC';
+				$response['stat'][$pid]['status']='AC';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);

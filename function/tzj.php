@@ -14,10 +14,21 @@ class tzj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://judge.tnfsh.tn.edu.tw:8080/ShowProblem?problemid='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://judge.tnfsh.tn.edu.tw:8080/ShowUserStatistic?account='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://judge.tnfsh.tn.edu.tw:8080/RealtimeStatus?problemid='.$pid.'&account='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -40,7 +51,7 @@ class tzj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request("http://judge.tnfsh.tn.edu.tw:8080/ShowUserStatistic?account=".$uid)->html;
 		$data=str_replace(array("\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);
@@ -68,12 +79,12 @@ class tzj {
 		}
 		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='AC';
+				$response['stat'][$pid]['status']='AC';
 			}
 		}
 		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='NA';
+				$response['stat'][$pid]['status']='NA';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);

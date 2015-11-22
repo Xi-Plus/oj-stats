@@ -14,10 +14,21 @@ class gj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://www.tcgs.tc.edu.tw:1218/ShowProblem?problemid='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://www.tcgs.tc.edu.tw:1218/ShowUserStatistic?account='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://www.tcgs.tc.edu.tw:1218/RealtimeStatus?problemid='.$pid.'&account='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -25,14 +36,7 @@ class gj {
 	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
 			$data=$this->fetch($validtime, $uid)['stat'];
-			if (is_array($probs)) {
-				foreach ($probs as $pid) {
-					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
-					else $response[$uid][$pid]='';
-				}
-			} else {
-				$response[$uid]=$data;
-			}
+			$response[$uid]=$data;
 		}
 		return $response;
 	}
@@ -40,7 +44,7 @@ class gj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request("http://www.tcgs.tc.edu.tw:1218/ShowUserStatistic?account=".$uid)->html;
 		$data=str_replace(array("\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);
@@ -68,12 +72,12 @@ class gj {
 		}
 		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='AC';
+				$response['stat'][$pid]['status']='AC';
 			}
 		}
 		if (preg_match_all('/<a.*?style="color: #666666; font-weight: bold;".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='NA';
+				$response['stat'][$pid]['status']='NA';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);

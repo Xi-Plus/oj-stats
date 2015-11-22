@@ -15,10 +15,21 @@ class cf {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://codeforces.com/problemset/problem/'.substr($pid, 0, strlen($pid)-1).'/'.$pid[strlen($pid)-1];
+	}
+
+	public function userlink($uid) {
+		return 'http://codeforces.com/profile/'.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return '';
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -26,14 +37,7 @@ class cf {
 	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
 			$data=$this->fetch($validtime, $uid)['stat'];
-			if (is_array($probs)) {
-				foreach ($probs as $pid) {
-					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
-					else $response[$uid][$pid]='';
-				}
-			} else {
-				$response[$uid]=$data;
-			}
+			$response[$uid]=$data;
 		}
 		return $response;
 	}
@@ -73,7 +77,9 @@ class cf {
 		$data=json_decode(cURL_HTTP_Request($this->api.'user.status?handle='.$uid)->html,true)['result'];
 		foreach ($data as $temp) {
 			$pid=$temp['problem']['contestId'].$temp['problem']['index'];
-			$response['stat'][$pid]=$this->changestat($response['stat'][$pid],$temp['verdict']);
+
+			if (isset($response['stat'][$pid]['status'])) $this->changestat($response['stat'][$pid]['status'],$temp['verdict']);
+			else $response['stat'][$pid]['status']=$this->verdictlist[$temp['verdict']];
 		}
 		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;

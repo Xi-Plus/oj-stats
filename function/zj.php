@@ -14,10 +14,21 @@ class zj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://zerojudge.tw/ShowProblem?problemid='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://zerojudge.tw/UserStatistic?account='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://zerojudge.tw/Submissions?problemid='.$pid.'&account='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -58,7 +69,7 @@ class zj {
 		$this->login();
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request("http://zerojudge.tw/UserStatistic?account=".$uid,null,false,true)->html;
 		$data=str_replace(array("\r\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);
@@ -82,12 +93,12 @@ class zj {
 		}
 		if (preg_match_all('/class="acstyle" .*?>(.+?)<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='AC';
+				$response['stat'][$pid]['status']='AC';
 			}
 		}
 		if (preg_match_all('/style="color: #666666; font-weight: bold;".*?>(.+?)<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='NA';
+				$response['stat'][$pid]['status']='NA';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);

@@ -15,10 +15,21 @@ class uva {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://luckycat.kshs.kh.edu.tw/homework/q'.$pid.'.htm';
+	}
+
+	public function userlink($uid) {
+		return 'http://uhunt.felix-halim.net/u/'.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://uhunt.felix-halim.net/u/'.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -84,8 +95,8 @@ class uva {
 		$response['info']['name']=$data['name'];
 		foreach ($data['subs'] as $temp) {
 			$pid=$temp[1];
-			if (isset($response['stat'][$pid])) $this->changestat($response['stat'][$pid],$temp[2]);
-			else $response['stat'][$pid]=$this->verdictlist[$temp[2]];
+			if (isset($response['stat'][$pid]['status'])) $this->changestat($response['stat'][$pid]['status'],$temp[2]);
+			else $response['stat'][$pid]['status']=$this->verdictlist[$temp[2]];
 		}
 		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;

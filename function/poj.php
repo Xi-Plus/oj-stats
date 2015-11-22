@@ -14,10 +14,21 @@ class poj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://poj.org/problem?id='.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://poj.org/userstatus?user_id='.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://poj.org/status?problem_id='.$pid.'&user_id='.$uid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -40,7 +51,7 @@ class poj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/'.$uid.'--(.+?)  <\/a>.*?Last Loginned Time:(.+?)<br>.*?Solved:<\/td>.*?>(\d+?)<\/a>.*?Submissions:<\/td>.*?>(\d+?)<\/a>.*?School:<\/td>.*?>(.+?) <\/td>.*?Email:<\/td>.*?>(.+?) <\/td>/', $data, $match)) {
@@ -56,14 +67,14 @@ class poj {
 		if (preg_match('/Problems both.*?accepted(.+?)Problems only.*?tried but failed/', $data, $match)) {
 			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
-					$response['stat'][$pid]='AC';
+					$response['stat'][$pid]['status']='AC';
 				}
 			}
 		}
 		if (preg_match('/Problems both.*?tried but failed(.+?)Home Page/', $data, $match)) {
 			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
-					$response['stat'][$pid]='NA';
+					$response['stat'][$pid]['status']='NA';
 				}
 			}
 		}

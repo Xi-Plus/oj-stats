@@ -14,10 +14,21 @@ class tioj {
 		return $this->info;
 	}
 
+	public function problink($pid) {
+		return 'http://tioj.ck.tp.edu.tw/problems/'.$pid;
+	}
+
+	public function userlink($uid) {
+		return 'http://tioj.ck.tp.edu.tw/users/'.$uid;
+	}
+
+	public function statuslink($uid, $pid) {
+		return 'http://tioj.ck.tp.edu.tw/submissions?filter_username='.$uid.'&filter_problem='.$pid;
+	}
+
 	public function userinfo($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['info'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['info'];
 		}
 		return $response;
 	}
@@ -40,7 +51,7 @@ class tioj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=array('info'=>null, 'stat'=>null);
+		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		$count=1;
@@ -57,12 +68,12 @@ class tioj {
 		}
 		if (preg_match_all('/<a class="text-success".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='AC';
+				$response['stat'][$pid]['status']='AC';
 			}
 		}
 		if (preg_match_all('/<a class="text-warning".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
-				$response['stat'][$pid]='NA';
+				$response['stat'][$pid]['status']='NA';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);
