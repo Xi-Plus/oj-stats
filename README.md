@@ -13,18 +13,20 @@ Fetch from `/api` via http GET/POST with following parameters.
 #### Nodes
 | [node](README.md#parameters) | Description | Parameters | Request method |
 |---|---|---|---|
-| ojinfo | Online judge infomation. | oj `Essential` <br> node `Essential` | `?oj={oj-name}`<br>`&node=ojinfo` |
-| userinfo | User infomation on online judge. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> validtime `Optional` | `?oj={oj-name}`<br>`&node=userinfo`<br>`&user={user-array}`<br>`&validtime={valid-time}` |
-| userstat | User solved problem. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> prob `Optional` <br> validtime `Optional` | `?oj={oj-name}`<br>`&node=userstat`<br>`&user={user-array}`<br>`&prob={prob-array}`<br>`&validtime={valid-time}` |
+| ojinfo | Online judge infomation. | oj `Essential` <br> node `Essential` <br> field `Optional` | `?oj={oj-name}`<br>`&node=ojinfo`<br>`&field={field-array}` |
+| userinfo | User infomation on online judge. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> field `Optional` <br> validtime `Optional` | `?oj={oj-name}`<br>`&node=userinfo`<br>`&user={user-array}`<br>`&field={field-array}`<br>`&validtime={valid-time}` |
+| userstat | User submitted problem. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> prob `Optional` <br> field `Optional` <br> validtime `Optional` | `?oj={oj-name}`<br>`&node=userstat`<br>`&user={user-array}`<br>`&prob={prob-array}`<br>`&field={field-array}`<br>`&validtime={valid-time}` |
+| probinfo | Problem infomation on online judge. | oj `Essential` <br> node `Essential` <br> prob `Essential` <br> field `Optional` | `?oj={oj-name}`<br>`&node=probinfo`<br>`&prob={prob-array}`<br>`&field={field-array}` |
 
 #### Parameters
 | Parameter | Description | Type |
 |---|---|---|
-| oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
-| node <br> `Essential` | View [here](README.md#nodes). | String |
-| user <br> `Essential` | User ID list. | Array String |
-| prob <br> `Optional` | Problem ID list. | Array String |
-| validtime <br> `Optional` | Valid time (seconds). If last fetch time < now - validtime, it will be refreshed. Default in `config/config.php`. | Integer |
+| oj | Online judge name. View [here](README.md#supported-oj). | String |
+| node | View [here](README.md#nodes). | String |
+| user | User ID list. | Array String |
+| prob | Problem ID list. | Array String |
+| field | Return fields choice. Defalut it all fields. Additional:`link` | Array String |
+| validtime | Valid time (seconds). If last fetch time < now - validtime, it will be refreshed. Default in `config/config.php`. | Integer |
 
 #### Supported OJ
 | OJ id | OJ name | Link | User ID |
