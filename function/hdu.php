@@ -33,7 +33,7 @@ class hdu {
 		return $response;
 	}
 
-	public function userstat($validtime, $users, $probs=NULL) {
+	public function userstat($validtime, $users) {
 		foreach ($users as $uid) {
 			$response[$uid]=$this->fetch($validtime, $uid)['stat'];
 		}
