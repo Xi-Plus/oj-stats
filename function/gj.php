@@ -49,22 +49,22 @@ class gj {
 			$data=str_replace(array("  ")," ",$data,$count);
 		}
 		if (preg_match('/ID:<.*?>(\d+?)<.*?>User name:<\/td> <td align="left">(.+?)<.*?>School:<\/td> <td> (.+?) <.*?>IP address:<\/td> <td>(.+?)<.*?>Rank Point:<.*?>(\d+?)<.*?> Last Login：<br \/> (.+?) <.*?> AC <.*?>(\d+?)<.*?> 不通過\(NA\) <.*?>(\d+?)<.*? WA <.*?>(\d+?)<.*?TLE <.*?>(\d+?)<.*? MLE <.*?>(\d+?)<.*? OLE <.*?>(\d+?)<.*? RE <.*?">(\d+?)<.*? CE <.*?>(\d+?)<.*?Total submit <.*?>(\d+?)<.*? Rank：<.*?>(\d+?)<\/a>/', $data, $match)) {
-			$response['info']['id']=$match[1];
-			$response['info']['name']=$match[2];
-			$response['info']['school']=$match[3];
-			$response['info']['ip']=$match[4];
-			$response['info']['totalcount']['score']=$match[5];
-			$response['info']['lastlogin']=$match[6];
-			$response['info']['totalcount']['AC']=$match[7];
-			$response['info']['totalcount']['NA']=$match[8];
-			$response['info']['totalcount']['WA']=$match[9];
-			$response['info']['totalcount']['TLE']=$match[10];
-			$response['info']['totalcount']['MLE']=$match[11];
-			$response['info']['totalcount']['OLE']=$match[12];
-			$response['info']['totalcount']['RE']=$match[13];
-			$response['info']['totalcount']['CE']=$match[14];
-			$response['info']['totalcount']['submit']=$match[15];
-			$response['info']['rank']=$match[16];
+			$response['info']['ID']=$match[1];
+			$response['info']['User name']=$match[2];
+			$response['info']['School']=$match[3];
+			$response['info']['IP address']=$match[4];
+			$response['info']['Rank Point']=$match[5];
+			$response['info']['Last Login']=$match[6];
+			$response['info']['AC']=$match[7];
+			$response['info']['NA']=$match[8];
+			$response['info']['WA']=$match[9];
+			$response['info']['TLE']=$match[10];
+			$response['info']['MLE']=$match[11];
+			$response['info']['OLE']=$match[12];
+			$response['info']['RE']=$match[13];
+			$response['info']['CE']=$match[14];
+			$response['info']['Total submit']=$match[15];
+			$response['info']['Rank']=$match[16];
 		}
 		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {

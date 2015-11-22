@@ -43,13 +43,17 @@ class tioj {
 		$response=$data;
 		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
+		$count=1;
+		while ($count) {
+			$data=str_replace(array("  ")," ",$data,$count);
+		}
 		if (preg_match('/<h5>(.+?)<\/h5> <h6>.*?AC Ratio: <\/div> <div class="col-md-5"> (\d+?)<br> (\d+?)<br> (.+?)%.*?Signed up at: (.+?)<br> Last sign in: (.+?)<br>/', $data, $match)) {
-			$response['info']['name']=$match[1];
-			$response['info']['totalcount']['AC']=$match[2];
-			$response['info']['totalcount']['NA']=$match[3];
-			$response['info']['totalcount']['Ratio']=$match[4];
-			$response['info']['signup']=$match[5];
-			$response['info']['lastlogin']=$match[6];
+			$response['info']['Nickname']=$match[1];
+			$response['info']['Tried and accepted']=$match[2];
+			$response['info']['Tried but in vain']=$match[3];
+			$response['info']['AC Ratio']=$match[4];
+			$response['info']['Signed up at']=$match[5];
+			$response['info']['Last sign in']=$match[6];
 		}
 		if (preg_match_all('/<a class="text-success".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {

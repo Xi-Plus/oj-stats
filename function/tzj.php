@@ -49,22 +49,22 @@ class tzj {
 			$data=str_replace(array("  ")," ",$data,$count);
 		}
 		if (preg_match('/編號:<.*?>(\d+?)<.*?>姓名:<\/div><\/td> <td><.*?>(.+?)<.*?>級數-班級: <.*?> (\d+?)-(\d+?) <.*?>來源:<\/div><\/td> <td><.*?>(.+?) <.*?>分數:<.*?>(\d+?)<.*?> 最後登入時間：<br \/> (.+?) <br.*?AC.*?>(\d+?)<.*?WA.*?>(\d+?)<.*?TLE.*?>(\d+?)<.*?MLE.*?>(\d+?)<.*?OLE.*?>(\d+?)<.*?RE.*?>(\d+?)<.*?CE.*?>(\d+?)<.*?>總共傳送 <.*?>(\d+?)<.*?> 目前排名：<.*?>(\d+?)<\/a>/', $data, $match)) {
-			$response['info']['id']=$match[1];
-			$response['info']['name']=$match[2];
-			$response['info']['grade']=$match[3];
-			$response['info']['class']=$match[4];
-			$response['info']['ip']=$match[5];
-			$response['info']['totalcount']['score']=$match[6];
-			$response['info']['lastlogin']=$match[7];
-			$response['info']['totalcount']['AC']=$match[8];
-			$response['info']['totalcount']['WA']=$match[9];
-			$response['info']['totalcount']['TLE']=$match[10];
-			$response['info']['totalcount']['MLE']=$match[11];
-			$response['info']['totalcount']['OLE']=$match[12];
-			$response['info']['totalcount']['RE']=$match[13];
-			$response['info']['totalcount']['CE']=$match[14];
-			$response['info']['totalcount']['submit']=$match[15];
-			$response['info']['rank']=$match[16];
+			$response['info']['ID']=$match[1];
+			$response['info']['User name']=$match[2];
+			$response['info']['Grade']=$match[3];
+			$response['info']['Class']=$match[4];
+			$response['info']['IP address']=$match[5];
+			$response['info']['Rank Point']=$match[6];
+			$response['info']['Last Login']=$match[7];
+			$response['info']['AC']=$match[8];
+			$response['info']['WA']=$match[9];
+			$response['info']['TLE']=$match[10];
+			$response['info']['MLE']=$match[11];
+			$response['info']['OLE']=$match[12];
+			$response['info']['RE']=$match[13];
+			$response['info']['CE']=$match[14];
+			$response['info']['Total submit']=$match[15];
+			$response['info']['Rank']=$match[16];
 		}
 		if (preg_match_all('/<a.*?id="acstyle".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {

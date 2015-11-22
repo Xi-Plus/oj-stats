@@ -67,18 +67,18 @@ class zj {
 			$data=str_replace(array("  ")," ",$data,$count);
 		}
 		if (preg_match('/編號 : (\d+)<.*?姓名 : (.+?)<br \/> 學校 : (.+?) <!--.*?來源 : \[(.+?)\] <br \/> 最後登入時間 ：<br \/> (.+?) <br \/>.*?共通過.*?>(\d+?)<\/a> 題.*?錯誤.*?>(\d+?)<\/a> 次 <br \/> 逾時.*?>(\d+?)<\/a> 次 <br \/> 記憶體過量.*?>(\d+?)<\/a> 次 <br \/> 輸出檔過大.*?>(\d+?)<\/a> 次 <br \/> 執行錯誤.*?>(\d+?)<\/a> 次 <br \/> 編譯錯誤.*?>(\d+?)<\/a> 次/', $data, $match)) {
-			$response['info']['id']=$match[1];
-			$response['info']['name']=$match[2];
-			$response['info']['school']=$match[3];
-			$response['info']['ip']=$match[4];
-			$response['info']['lastlogin']=$match[5];
-			$response['info']['totalcount']['AC']=$match[6];
-			$response['info']['totalcount']['WA']=$match[7];
-			$response['info']['totalcount']['TLE']=$match[8];
-			$response['info']['totalcount']['MLE']=$match[9];
-			$response['info']['totalcount']['OLE']=$match[10];
-			$response['info']['totalcount']['RE']=$match[11];
-			$response['info']['totalcount']['CE']=$match[12];
+			$response['info']['ID']=$match[1];
+			$response['info']['User name']=$match[2];
+			$response['info']['School']=$match[3];
+			$response['info']['IP address']=$match[4];
+			$response['info']['Last Login']=$match[5];
+			$response['info']['AC']=$match[6];
+			$response['info']['WA']=$match[7];
+			$response['info']['TLE']=$match[8];
+			$response['info']['MLE']=$match[9];
+			$response['info']['OLE']=$match[10];
+			$response['info']['RE']=$match[11];
+			$response['info']['CE']=$match[12];
 		}
 		if (preg_match_all('/class="acstyle" .*?>(.+?)<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {

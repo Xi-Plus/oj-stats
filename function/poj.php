@@ -43,13 +43,13 @@ class poj {
 		$response=$data;
 		$data=cURL_HTTP_Request('http://poj.org/userstatus?user_id='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
-		if (preg_match('/'.$uid.'--(.+?) <\/a>.*?Last Loginned Time:(.+?)<br>.*?Solved:<\/td>.*?>(\d+?)<\/a>.*?Submissions:<\/td>.*?>(\d+?)<\/a>.*?School:<\/td>.*?>(.+?) <\/td>.*?Email:<\/td>.*?>(.+?) <\/td>/', $data, $match)) {
-			$response['info']['name']=$match[1];
-			$response['info']['lastlogin']=$match[2];
-			$response['info']['totalcount']['AC']=$match[3];
-			$response['info']['totalcount']['Submission']=$match[4];
-			$response['info']['school']=$match[5];
-			$response['info']['email']=$match[6];
+		if (preg_match('/'.$uid.'--(.+?)  <\/a>.*?Last Loginned Time:(.+?)<br>.*?Solved:<\/td>.*?>(\d+?)<\/a>.*?Submissions:<\/td>.*?>(\d+?)<\/a>.*?School:<\/td>.*?>(.+?) <\/td>.*?Email:<\/td>.*?>(.+?) <\/td>/', $data, $match)) {
+			$response['info']['Nickname']=$match[1];
+			$response['info']['Last Loginned Time']=$match[2];
+			$response['info']['Solved']=$match[3];
+			$response['info']['Submissions']=$match[4];
+			$response['info']['School']=$match[5];
+			$response['info']['Email']=$match[6];
 		}
 		$data=cURL_HTTP_Request('http://poj.org/usercmp?uid1='.$uid.'&uid2='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);

@@ -44,12 +44,12 @@ class bzoj {
 		$data=cURL_HTTP_Request('http://www.lydsy.com/JudgeOnline/userinfo.php?user='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<caption>.*?--(.+?)<\/caption><.*?>No\.<.*?>(\d+?)<.*?>Solved<.*?>(\d+?)<\/a><.*?>Submit<.*?>(\d+?)<.*?>School:<.*?>(.*?)<\/tr><.*?>Email:<.*?>(.*?)<\/tr>/', $data, $match)) {
-			$response['info']['name']=$match[1];
-			$response['info']['id']=$match[2];
-			$response['info']['totalcount']['solved']=$match[3];
-			$response['info']['totalcount']['submit']=$match[4];
-			$response['info']['school']=$match[5];
-			$response['info']['email']=$match[6];
+			$response['info']['Nickname']=$match[1];
+			$response['info']['No']=$match[2];
+			$response['info']['Solved']=$match[3];
+			$response['info']['Submit']=$match[4];
+			$response['info']['School']=$match[5];
+			$response['info']['Email']=$match[6];
 		}
 		if (preg_match_all('/p\(('.$this->info['pattern'].')\)/', $data, $match)) {
 			foreach ($match[1] as $pid) {

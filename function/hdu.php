@@ -44,14 +44,14 @@ class hdu {
 		$data=cURL_HTTP_Request('http://acm.hdu.edu.cn/userstatus.php?user='.$uid)->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<h1.*?>(.+?)<\/h1>.*?>from: (.+?)&nbsp;.*?registered on (.+?)<.*?>Rank<.*?>(\d+?)<.*?>Problems Submitted<.*?>(\d+?)<.*?>Problems Solved<.*?>(\d+?)<.*?>Submissions<.*?>(\d+?)<.*?>Accepted<.*?>(\d+?)<\/td>/', $data, $match)) {
-			$response['info']['name']=$match[1];
-			$response['info']['school']=$match[2];
-			$response['info']['signup']=$match[3];
-			$response['info']['rank']=$match[4];
-			$response['info']['totalcount']['problem_sumbitted']=$match[5];
-			$response['info']['totalcount']['problem_solved']=$match[6];
-			$response['info']['totalcount']['Submission']=$match[7];
-			$response['info']['totalcount']['AC']=$match[8];
+			$response['info']['Nickname']=$match[1];
+			$response['info']['from']=$match[2];
+			$response['info']['registered on']=$match[3];
+			$response['info']['Rank']=$match[4];
+			$response['info']['Problems Submitted']=$match[5];
+			$response['info']['Problems Solved']=$match[6];
+			$response['info']['Submissions']=$match[7];
+			$response['info']['Accepted']=$match[8];
 		}
 		if (preg_match('/List of solved problems(.+?)List of unsolved problems/', $data, $match)) {
 			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
