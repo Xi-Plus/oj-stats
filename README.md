@@ -8,23 +8,23 @@ Required
 Features
 ---
 ### API
-Fetch from `/api` via http GET/POST with following arguments.
-
-#### Arguments
-| Arguments | Description | Type |
-|-----------|-------------------|---|
-| field <br> `Essential` | View [here](README.md#method). | String |
-| oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
-| user <br> `Essential` | User ID list. | Array String |
-| prob <br> `Optional` | Problem ID list. | Array String |
-| validtime <br> `Optional` | Valid time (seconds). If last fetch time < now - validtime, it will be refreshed. Default is setting in `config/config.php`. | Integer |
+Fetch from `/api` via http GET/POST with following parameters.
 
 #### Method
-| field | Description | Usage |
-|-----------|-------------------|---|
-| ojinfo | Online judge infomation. Ex: Name, URL. | `field=ojinfo&oj={oj-name}` |
-| userinfo | User infomation on online judge. | `field=userinfo&oj={oj-name}&user={user-array}&validtime={valid-time}` |
-| userstat | User solved problem. | `field=userstat&oj={oj-name}&user={user-array}&prob={prob-array}&validtime={valid-time}` |
+| [field](README.md#parameters) | Description | Parameters | Usage |
+|---|---|---|---|
+| ojinfo | Online judge infomation. | oj `Essential` <br> field `Essential` | `oj={oj-name}&`<br>`field=ojinfo` |
+| userinfo | User infomation on online judge. | oj `Essential` <br> field `Essential` <br> user `Essential` <br> validtime `Optional` | `oj={oj-name}&`<br>`field=userinfo&`<br>`user={user-array}&`<br>`validtime={valid-time}` |
+| userstat | User solved problem. | oj `Essential` <br> field `Essential` <br> user `Essential` <br> prob `Optional` <br> validtime `Optional` | `oj={oj-name}&`<br>`field=userstat&`<br>`user={user-array}&`<br>`prob={prob-array}&`<br>`validtime={valid-time}` |
+
+#### Parameters
+| Parameters | Description | Type |
+|---|---|---|
+| oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
+| field <br> `Essential` | View [here](README.md#method). | String |
+| user <br> `Essential` | User ID list. | Array String |
+| prob <br> `Optional` | Problem ID list. | Array String |
+| validtime <br> `Optional` | Valid time (seconds). If last fetch time < now - validtime, it will be refreshed. Default in `config/config.php`. | Integer |
 
 #### Supported OJ
 | OJ id | OJ name | Link | User ID |
