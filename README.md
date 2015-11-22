@@ -18,7 +18,7 @@ Fetch from `/api` via http GET/POST with following parameters.
 | userstat | User solved problem. | oj `Essential` <br> field `Essential` <br> user `Essential` <br> prob `Optional` <br> validtime `Optional` | `oj={oj-name}&`<br>`field=userstat&`<br>`user={user-array}&`<br>`prob={prob-array}&`<br>`validtime={valid-time}` |
 
 #### Parameters
-| Parameters | Description | Type |
+| Parameter | Description | Type |
 |---|---|---|
 | oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
 | field <br> `Essential` | View [here](README.md#method). | String |
