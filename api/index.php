@@ -77,16 +77,18 @@ try {
 					$response[$uid][$pid]['status']='';
 				}
 			}
-			foreach ($user as $pid => $prob) {
-				foreach ($prob as $field => $value) {
-					if (isset($_REQUEST['field'])&&!in_array($field, $fieldlist)) {
-					} else  {
-						$response[$uid][$pid][$field]=$data[$uid][$pid][$field];
+			foreach ($response[$uid] as $pid => $temp) {
+				if (isset($data[$uid][$pid])) {
+					foreach ($data[$uid][$pid] as $field => $value) {
+						if (isset($_REQUEST['field'])&&!in_array($field, $fieldlist)) {
+						} else  {
+							$response[$uid][$pid][$field]=$data[$uid][$pid][$field];
+						}
 					}
-					if (isset($_REQUEST['field'])&&!in_array('link', $fieldlist)) {
-					} else  {
-						$response[$uid][$pid]['link']=$oj->statuslink($uid, $pid);
-					}
+				}
+				if (isset($_REQUEST['field'])&&!in_array('link', $fieldlist)) {
+				} else  {
+					$response[$uid][$pid]['link']=$oj->statuslink($uid, $pid);
 				}
 			}
 		}
