@@ -13,8 +13,8 @@ try {
 	if (!isset($config['available_oj'][$_REQUEST['oj']])) {
 		throw new Exception('Unsupported oj');
 	}
-	if (!isset($_REQUEST['field'])) {
-		throw new Exception('Not given field');
+	if (!isset($_REQUEST['node'])) {
+		throw new Exception('Not given node');
 	}
 
 	require(__DIR__.'/../function/'.$config['available_oj'][$_REQUEST['oj']]);
@@ -29,14 +29,14 @@ try {
 		
 	} else $validtime=3600;
 
-	if ($_REQUEST['field']=='ojinfo') {
+	if ($_REQUEST['node']=='ojinfo') {
 		$response=$oj->ojinfo();
-	} else if ($_REQUEST['field']=='userinfo') {
+	} else if ($_REQUEST['node']=='userinfo') {
 		if (!is_array(json_decode($_REQUEST['user']))) {
 			throw new Exception('User is not array');
 		}
 		$response=$oj->userinfo($validtime, json_decode($_REQUEST['user']));
-	} else if($_REQUEST['field']=='userstat'){
+	} else if($_REQUEST['node']=='userstat'){
 		if (!is_array(json_decode($_REQUEST['user']))) {
 			throw new Exception('User is not array');
 		}
@@ -55,7 +55,7 @@ try {
 			$response=$oj->userstat($validtime, json_decode($_REQUEST['user']));
 		}
 	} else {
-		throw new Exception('Unknown field');
+		throw new Exception('Unknown node');
 	}
 } catch (Exception $e) {
 	$response->error = $e->getMessage();

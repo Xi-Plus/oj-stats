@@ -11,17 +11,17 @@ Features
 Fetch from `/api` via http GET/POST with following parameters.
 
 #### Method
-| [field](README.md#parameters) | Description | Parameters | Usage |
+| [node](README.md#parameters) | Description | Parameters | Usage |
 |---|---|---|---|
-| ojinfo | Online judge infomation. | oj `Essential` <br> field `Essential` | `oj={oj-name}&`<br>`field=ojinfo` |
-| userinfo | User infomation on online judge. | oj `Essential` <br> field `Essential` <br> user `Essential` <br> validtime `Optional` | `oj={oj-name}&`<br>`field=userinfo&`<br>`user={user-array}&`<br>`validtime={valid-time}` |
-| userstat | User solved problem. | oj `Essential` <br> field `Essential` <br> user `Essential` <br> prob `Optional` <br> validtime `Optional` | `oj={oj-name}&`<br>`field=userstat&`<br>`user={user-array}&`<br>`prob={prob-array}&`<br>`validtime={valid-time}` |
+| ojinfo | Online judge infomation. | oj `Essential` <br> node `Essential` | `oj={oj-name}&`<br>`node=ojinfo` |
+| userinfo | User infomation on online judge. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> validtime `Optional` | `oj={oj-name}&`<br>`node=userinfo&`<br>`user={user-array}&`<br>`validtime={valid-time}` |
+| userstat | User solved problem. | oj `Essential` <br> node `Essential` <br> user `Essential` <br> prob `Optional` <br> validtime `Optional` | `oj={oj-name}&`<br>`node=userstat&`<br>`user={user-array}&`<br>`prob={prob-array}&`<br>`validtime={valid-time}` |
 
 #### Parameters
 | Parameter | Description | Type |
 |---|---|---|
 | oj <br> `Essential` | Online judge name. View [here](README.md#supported-oj). | String |
-| field <br> `Essential` | View [here](README.md#method). | String |
+| node <br> `Essential` | View [here](README.md#method). | String |
 | user <br> `Essential` | User ID list. | Array String |
 | prob <br> `Optional` | Problem ID list. | Array String |
 | validtime <br> `Optional` | Valid time (seconds). If last fetch time < now - validtime, it will be refreshed. Default in `config/config.php`. | Integer |
