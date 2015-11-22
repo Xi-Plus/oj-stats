@@ -44,7 +44,7 @@ class tioj {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=array('info'=>array(), 'stat'=>array());
-		$data=cURL_HTTP_Request("http://tioj.ck.tp.edu.tw/users/".$uid)->html;
+		$data=cURL_HTTP_Request($this->userlink($uid))->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		$count=1;
 		while ($count) {

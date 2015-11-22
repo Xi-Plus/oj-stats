@@ -44,7 +44,7 @@ class gj {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=array('info'=>array(), 'stat'=>array());
-		$data=cURL_HTTP_Request("http://www.tcgs.tc.edu.tw:1218/ShowUserStatistic?account=".$uid)->html;
+		$data=cURL_HTTP_Request($this->userlink($uid))->html;
 		$data=str_replace(array("\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);
 		$count=1;

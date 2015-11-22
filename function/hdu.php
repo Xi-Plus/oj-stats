@@ -44,7 +44,7 @@ class hdu {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=array('info'=>array(), 'stat'=>array());
-		$data=cURL_HTTP_Request('http://acm.hdu.edu.cn/userstatus.php?user='.$uid)->html;
+		$data=cURL_HTTP_Request($this->userlink($uid))->html;
 		$data=str_replace(array("\n","\t"),"",$data);
 		if (preg_match('/<h1.*?>(.+?)<\/h1>.*?>from: (.+?)&nbsp;.*?registered on (.+?)<.*?>Rank<.*?>(\d+?)<.*?>Problems Submitted<.*?>(\d+?)<.*?>Problems Solved<.*?>(\d+?)<.*?>Submissions<.*?>(\d+?)<.*?>Accepted<.*?>(\d+?)<\/td>/', $data, $match)) {
 			$response['info']['Nickname']=$match[1];
