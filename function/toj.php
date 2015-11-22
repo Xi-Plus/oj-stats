@@ -34,17 +34,9 @@ class toj {
 		return $response;
 	}
 
-	public function userstat($validtime, $users, $probs=NULL) {
+	public function userstat($validtime, $users) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['stat'];
-			if (is_array($probs)) {
-				foreach ($probs as $pid) {
-					if (isset($data[$pid])) $response[$uid][$pid]=$data[$pid];
-					else $response[$uid][$pid]='';
-				}
-			} else {
-				$response[$uid]=$data;
-			}
+			$response[$uid]=$this->fetch($validtime, $uid)['stat'];
 		}
 		return $response;
 	}

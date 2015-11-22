@@ -35,8 +35,7 @@ class gj {
 
 	public function userstat($validtime, $users, $probs=NULL) {
 		foreach ($users as $uid) {
-			$data=$this->fetch($validtime, $uid)['stat'];
-			$response[$uid]=$data;
+			$response[$uid]=$this->fetch($validtime, $uid)['stat'];
 		}
 		return $response;
 	}
