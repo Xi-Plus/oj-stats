@@ -40,7 +40,7 @@ class gj {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=$data;
+		$response=array('info'=>null, 'stat'=>null);
 		$data=cURL_HTTP_Request("http://www.tcgs.tc.edu.tw:1218/ShowUserStatistic?account=".$uid)->html;
 		$data=str_replace(array("\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);

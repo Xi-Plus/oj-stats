@@ -58,7 +58,7 @@ class zj {
 		$this->login();
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$response=$data;
+		$response=array('info'=>null, 'stat'=>null);
 		$data=cURL_HTTP_Request("http://zerojudge.tw/UserStatistic?account=".$uid,null,false,true)->html;
 		$data=str_replace(array("\r\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);

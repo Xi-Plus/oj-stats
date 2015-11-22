@@ -77,13 +77,15 @@ class uva {
 	private function fetch($validtime, $uid) {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
-		$uid=cURL_HTTP_Request($this->api.'uname2uid/'.$uid)->html;
-		if ($uid==0) throw new Exception('User not found');
+		$uid=cURL_HTTP_Request($this->api.'uname2uid/'.$uid);
+		if ($uid===false) throw new Exception('User not found');
+		$uid=$uid->html;
 		$data=json_decode(cURL_HTTP_Request($this->api.'subs-user/'.$uid)->html,true);
 		$response['info']['name']=$data['name'];
 		foreach ($data['subs'] as $temp) {
 			$pid=$temp[1];
-			$response['stat'][$pid]=$this->changestat($response['stat'][$pid],$temp[2]);
+			if (isset($response['stat'][$pid])) $this->changestat($response['stat'][$pid],$temp[2]);
+			else $response['stat'][$pid]=$this->verdictlist[$temp[2]];
 		}
 		(new cache)->write($this->info['id'], $uid, $response);
 		return $response;
