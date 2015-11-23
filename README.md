@@ -32,7 +32,7 @@ Fetch from `/api` via http GET/POST with following parameters.
 | OJ id | OJ name | Link | User ID | Remark |
 |---|---|---|---|---|
 | bzoj | 大视野在线测评 | http://www.lydsy.com/JudgeOnline | Your login `User ID` ||
-| cf | Codeforces | http://codeforces.com | Your login `Handle` ||
+| cf | Codeforces | http://codeforces.com | Your login `Handle` | Not supported Field:`userstat->link` |
 | gj | Green Judge | http://www.tcgs.tc.edu.tw:1218 | Your login `Account` ||
 | hdu | HDU Online Judge | http://acm.hdu.edu.cn | Your login `Author ID` ||
 | lightoj | Jan's LightOJ | http://lightoj.com | Your login `User ID` | Not supported Node:`userstat` |
@@ -41,5 +41,5 @@ Fetch from `/api` via http GET/POST with following parameters.
 | tioj | TIOJ Infor Online Judge | http://tioj.ck.tp.edu.tw | Your login `Username` ||
 | toj | TNFSH Online Judge | http://toj.tfcis.org | View [here](http://toj.tfcis.org/oj/chal/) to find your `ID` ||
 | tzj | TNFSH Judge | http://judge.tnfsh.tn.edu.tw:8080 | Your login `Account` ||
-| uva | UVa Online Judge | https://uva.onlinejudge.org | Your login `Username` ||
+| uva | UVa Online Judge | https://uva.onlinejudge.org | Your login `Username` | Not supported Field:`userstat->link` |
 | zj | ZeroJudge | http://zerojudge.tw | Your login `Account` ||

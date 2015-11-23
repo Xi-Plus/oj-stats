@@ -24,7 +24,7 @@ class uva {
 	}
 
 	public function statuslink($uid, $pid) {
-		return 'http://uhunt.felix-halim.net/u/'.$uid;
+		return '';
 	}
 
 	public function userinfo($validtime, $users) {
