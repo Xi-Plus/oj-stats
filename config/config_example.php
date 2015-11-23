@@ -6,6 +6,7 @@ $config['available_oj']=array(
 	'cf'=>'cf.php',
 	'gj'=>'gj.php',
 	'hdu'=>'hdu.php',
+	'lightoj'=>'lightoj.php',
 	'nthuoj'=>'nthuoj.php',
 	'poj'=>'poj.php',
 	'tioj'=>'tioj.php',
