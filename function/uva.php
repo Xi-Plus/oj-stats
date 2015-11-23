@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class uva {
 	private $info=array(
 		'id'=>'uva',
-		'UVa Online Judge',
+		'name'=>'UVa Online Judge',
 		'pattern'=>'[1-9]+[0-9]*',
 		'url'=>'https://uva.onlinejudge.org'
 	);

@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class tzj {
 	private $info=array(
 		'id'=>'tzj',
-		'Online Judge System For TNFSH',
+		'name'=>'Online Judge System For TNFSH',
 		'pattern'=>'[a-z]{1}[0-9]{3}',
 		'url'=>'http://judge.tnfsh.tn.edu.tw:8080'
 	);

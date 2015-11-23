@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class zj {
 	private $info=array(
 		'id'=>'zj',
-		'ZeroJudge',
+		'name'=>'ZeroJudge',
 		'pattern'=>'[a-z]{1}[0-9]{3}',
 		'url'=>'http://zerojudge.tw'
 	);

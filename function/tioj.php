@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class tioj {
 	private $info=array(
 		'id'=>'tioj',
-		'TIOJ Infor Online Judge',
+		'name'=>'TIOJ Infor Online Judge',
 		'pattern'=>'[1-9]{1}[0-9]{3}',
 		'url'=>'http://tioj.ck.tp.edu.tw'
 	);

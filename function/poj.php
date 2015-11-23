@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class poj {
 	private $info=array(
 		'id'=>'poj',
-		'PKU JudgeOnline',
+		'name'=>'PKU JudgeOnline',
 		'pattern'=>'[1-9]{1}[0-9]{3}',
 		'url'=>'http://poj.org'
 	);

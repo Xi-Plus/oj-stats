@@ -5,7 +5,7 @@ require_once(__DIR__.'/global.php');
 class nthuoj {
 	private $info=array(
 		'id'=>'nthuoj',
-		'National Tsing Hua University Online Judge',
+		'name'=>'National Tsing Hua University Online Judge',
 		'pattern'=>'[1-9]{1}[0-9]{3}',
 		'url'=>'http://acm.cs.nthu.edu.tw'
 	);
