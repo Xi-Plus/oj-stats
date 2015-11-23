@@ -9,6 +9,7 @@ class zj {
 		'pattern'=>'[a-z]{1}[0-9]{3}',
 		'url'=>'http://zerojudge.tw'
 	);
+	private $cookiefile='zj_cookie.txt';
 
 	public function ojinfo() {
 		return $this->info;
@@ -42,12 +43,12 @@ class zj {
 
 	private function login() {
 		global $config;
-		$data=cURL_HTTP_Request('http://zerojudge.tw/UserStatistic',null,false,true);
+		$data=cURL_HTTP_Request('http://zerojudge.tw/UserStatistic',null,false,$this->cookiefile);
 		if ($data===false) {
-			$data=cURL_HTTP_Request('http://zerojudge.tw/Login',null,false,true)->html;
+			$data=cURL_HTTP_Request('http://zerojudge.tw/Login',null,false,$this->cookiefile)->html;
 			if (preg_match('/name="token" value="([^"]+)/',$data,$res)) {
                 $token=$res[1];
-                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>$config['login']['zj']['acct'],'passwd'=>$config['login']['zj']['pass'],'returnPage'=>'/','token'=>$token),false,true);
+                $data=cURL_HTTP_Request('http://zerojudge.tw/Login',array('account'=>$config['login']['zj']['acct'],'passwd'=>$config['login']['zj']['pass'],'returnPage'=>'/','token'=>$token),false,$this->cookiefile);
                 if ($data===false) {
                 	throw new Exception('Zerojudge login fail');
                 }
@@ -62,7 +63,7 @@ class zj {
 		$data=(new cache)->read($this->info['id'], $uid);
 		if ($data!==false&&time()-$validtime<$data['timestamp']) return $data;
 		$response=array('info'=>array(), 'stat'=>array());
-		$data=cURL_HTTP_Request($this->userlink($uid),null,false,true)->html;
+		$data=cURL_HTTP_Request($this->userlink($uid),null,false,$this->cookiefile)->html;
 		$data=str_replace(array("\r\n"),"",$data);
 		$data=str_replace(array("\t")," ",$data);
 		$count=1;
