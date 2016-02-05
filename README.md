@@ -3,7 +3,7 @@ Online Judge Stats
 
 Required
 ---
-* `cURL-HTTP-function` from [here](https://github.com/Xi-Plus/cURL-HTTP-function)
+* Nothing here.
 
 Features
 ---
