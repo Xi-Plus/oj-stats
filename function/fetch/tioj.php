@@ -1,13 +1,13 @@
 <?php
-require_once(__DIR__.'/../config/config.php');
+require_once(__DIR__.'/../../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
-class bzoj {
+class tioj {
 	private $info=array(
-		'id'=>'bzoj',
-		'name'=>'大视野在线测评',
+		'id'=>'tioj',
+		'name'=>'TIOJ Infor Online Judge',
 		'pattern'=>'[1-9]{1}[0-9]{3}',
-		'url'=>'http://www.lydsy.com/JudgeOnline',
+		'url'=>'http://tioj.ck.tp.edu.tw'
 	);
 
 	public function ojinfo() {
@@ -15,15 +15,15 @@ class bzoj {
 	}
 
 	public function problink($pid) {
-		return 'http://www.lydsy.com/JudgeOnline/problem.php?id='.$pid;
+		return 'http://tioj.ck.tp.edu.tw/problems/'.$pid;
 	}
 
 	public function userlink($uid) {
-		return 'http://www.lydsy.com/JudgeOnline/userinfo.php?user='.$uid;
+		return 'http://tioj.ck.tp.edu.tw/users/'.$uid;
 	}
 
 	public function statuslink($uid, $pid) {
-		return 'http://www.lydsy.com/JudgeOnline/status.php?problem_id='.$pid.'&user_id='.$uid;
+		return 'http://tioj.ck.tp.edu.tw/submissions?filter_username='.$uid.'&filter_problem='.$pid;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -46,17 +46,26 @@ class bzoj {
 		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request($this->userlink($uid))->html;
 		$data=str_replace(array("\n","\t"),"",$data);
-		if (preg_match('/<caption>.*?--(.+?)<\/caption><.*?>No\.<.*?>(\d+?)<.*?>Solved<.*?>(\d+?)<\/a><.*?>Submit<.*?>(\d+?)<.*?>School:<.*?>(.*?)<\/tr><.*?>Email:<.*?>(.*?)<\/tr>/', $data, $match)) {
-			$response['info']['Nickname']=$match[1];
-			$response['info']['No']=$match[2];
-			$response['info']['Solved']=$match[3];
-			$response['info']['Submit']=$match[4];
-			$response['info']['School']=$match[5];
-			$response['info']['Email']=$match[6];
+		$count=1;
+		while ($count) {
+			$data=str_replace(array("  ")," ",$data,$count);
 		}
-		if (preg_match_all('/p\(('.$this->info['pattern'].')\)/', $data, $match)) {
+		if (preg_match('/<h5>(.+?)<\/h5> <h6>.*?AC Ratio: <\/div> <div class="col-md-5"> (\d+?)<br> (\d+?)<br> (.+?)%.*?Signed up at: (.+?)<br> Last sign in: (.+?)<br>/', $data, $match)) {
+			$response['info']['Nickname']=$match[1];
+			$response['info']['Tried and accepted']=$match[2];
+			$response['info']['Tried but in vain']=$match[3];
+			$response['info']['AC Ratio']=$match[4];
+			$response['info']['Signed up at']=$match[5];
+			$response['info']['Last sign in']=$match[6];
+		}
+		if (preg_match_all('/<a class="text-success".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
 			foreach ($match[1] as $pid) {
 				$response['stat'][$pid]['status']='AC';
+			}
+		}
+		if (preg_match_all('/<a class="text-warning".*?>('.$this->info['pattern'].')<\/a>/', $data, $match)) {
+			foreach ($match[1] as $pid) {
+				$response['stat'][$pid]['status']='NA';
 			}
 		}
 		(new cache)->write($this->info['id'], $uid, $response);

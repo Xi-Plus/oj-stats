@@ -1,13 +1,13 @@
 <?php
-require_once(__DIR__.'/../config/config.php');
+require_once(__DIR__.'/../../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
-class gj {
+class tzj {
 	private $info=array(
-		'id'=>'gj',
-		'name'=>'Green Judge, An Online Judge System for TCGS',
+		'id'=>'tzj',
+		'name'=>'Online Judge System For TNFSH',
 		'pattern'=>'[a-z]{1}[0-9]{3}',
-		'url'=>'http://www.tcgs.tc.edu.tw:1218'
+		'url'=>'http://judge.tnfsh.tn.edu.tw:8080'
 	);
 
 	public function ojinfo() {
@@ -15,15 +15,15 @@ class gj {
 	}
 
 	public function problink($pid) {
-		return 'http://www.tcgs.tc.edu.tw:1218/ShowProblem?problemid='.$pid;
+		return 'http://judge.tnfsh.tn.edu.tw:8080/ShowProblem?problemid='.$pid;
 	}
 
 	public function userlink($uid) {
-		return 'http://www.tcgs.tc.edu.tw:1218/ShowUserStatistic?account='.$uid;
+		return 'http://judge.tnfsh.tn.edu.tw:8080/ShowUserStatistic?account='.$uid;
 	}
 
 	public function statuslink($uid, $pid) {
-		return 'http://www.tcgs.tc.edu.tw:1218/RealtimeStatus?problemid='.$pid.'&account='.$uid;
+		return 'http://judge.tnfsh.tn.edu.tw:8080/RealtimeStatus?problemid='.$pid.'&account='.$uid;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -51,15 +51,15 @@ class gj {
 		while ($count) {
 			$data=str_replace(array("  ")," ",$data,$count);
 		}
-		if (preg_match('/ID:<.*?>(\d+?)<.*?>User name:<\/td> <td align="left">(.+?)<.*?>School:<\/td> <td> (.+?) <.*?>IP address:<\/td> <td>(.+?)<.*?>Rank Point:<.*?>(\d+?)<.*?> Last Login：<br \/> (.+?) <.*?> AC <.*?>(\d+?)<.*?> 不通過\(NA\) <.*?>(\d+?)<.*? WA <.*?>(\d+?)<.*?TLE <.*?>(\d+?)<.*? MLE <.*?>(\d+?)<.*? OLE <.*?>(\d+?)<.*? RE <.*?">(\d+?)<.*? CE <.*?>(\d+?)<.*?Total submit <.*?>(\d+?)<.*? Rank：<.*?>(\d+?)<\/a>/', $data, $match)) {
+		if (preg_match('/編號:<.*?>(\d+?)<.*?>姓名:<\/div><\/td> <td><.*?>(.+?)<.*?>級數-班級: <.*?> (\d+?)-(\d+?) <.*?>來源:<\/div><\/td> <td><.*?>(.+?) <.*?>分數:<.*?>(\d+?)<.*?> 最後登入時間：<br \/> (.+?) <br.*?AC.*?>(\d+?)<.*?WA.*?>(\d+?)<.*?TLE.*?>(\d+?)<.*?MLE.*?>(\d+?)<.*?OLE.*?>(\d+?)<.*?RE.*?>(\d+?)<.*?CE.*?>(\d+?)<.*?>總共傳送 <.*?>(\d+?)<.*?> 目前排名：<.*?>(\d+?)<\/a>/', $data, $match)) {
 			$response['info']['ID']=$match[1];
 			$response['info']['User name']=$match[2];
-			$response['info']['School']=$match[3];
-			$response['info']['IP address']=$match[4];
-			$response['info']['Rank Point']=$match[5];
-			$response['info']['Last Login']=$match[6];
-			$response['info']['AC']=$match[7];
-			$response['info']['NA']=$match[8];
+			$response['info']['Grade']=$match[3];
+			$response['info']['Class']=$match[4];
+			$response['info']['IP address']=$match[5];
+			$response['info']['Rank Point']=$match[6];
+			$response['info']['Last Login']=$match[7];
+			$response['info']['AC']=$match[8];
 			$response['info']['WA']=$match[9];
 			$response['info']['TLE']=$match[10];
 			$response['info']['MLE']=$match[11];

@@ -1,5 +1,5 @@
 <?php
-$config['curl_path']=__DIR__.'/../function/curl.php';
+$config['curl_path']=__DIR__.'/../function/cURL-HTTP-function/curl.php';
 $config['valid_time']=3600;
 $config['available_oj']=array(
 	'bzoj'=>'bzoj.php',

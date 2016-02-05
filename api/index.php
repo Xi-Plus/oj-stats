@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/../config/config.php');
+require_once(__DIR__.'/../function/fetch/global.php');
 
 foreach ($_REQUEST as $index => $temp) {
 	$_REQUEST[$index]=urldecode($_REQUEST[$index]);
@@ -16,7 +17,7 @@ try {
 		throw new Exception('Not given node');
 	}
 
-	require(__DIR__.'/../function/'.$config['available_oj'][$_REQUEST['oj']]);
+	require(__DIR__.'/../function/fetch/'.$config['available_oj'][$_REQUEST['oj']]);
 	$oj=new $_REQUEST['oj']();
 
 	if (isset($_REQUEST['validtime'])) {
@@ -76,19 +77,35 @@ try {
 				foreach ($problist as $pid) {
 					$response[$uid][$pid]['status']='';
 				}
-			}
-			foreach ($response[$uid] as $pid => $temp) {
-				if (isset($data[$uid][$pid])) {
-					foreach ($data[$uid][$pid] as $field => $value) {
-						if (isset($_REQUEST['field'])&&!in_array($field, $fieldlist)) {
-						} else  {
-							$response[$uid][$pid][$field]=$data[$uid][$pid][$field];
+				foreach ($response[$uid] as $pid => $temp) {
+					if (isset($data[$uid][$pid])) {
+						foreach ($data[$uid][$pid] as $field => $value) {
+							if (isset($_REQUEST['field'])&&!in_array($field, $fieldlist)) {
+							} else  {
+								$response[$uid][$pid][$field]=$data[$uid][$pid][$field];
+							}
 						}
 					}
+					if (isset($_REQUEST['field'])&&!in_array('link', $fieldlist)) {
+					} else  {
+						$response[$uid][$pid]['link']=$oj->statuslink($uid, $pid);
+					}
 				}
-				if (isset($_REQUEST['field'])&&!in_array('link', $fieldlist)) {
-				} else  {
-					$response[$uid][$pid]['link']=$oj->statuslink($uid, $pid);
+			} else {
+				foreach ($response as $uid => $temp) {
+					foreach ($data[$uid] as $pid => $temp2) {
+						$response[$uid][$pid]=$data[$uid][$pid]["status"];
+						foreach ($data[$uid][$pid] as $field => $value) {
+							if (isset($_REQUEST['field'])&&!in_array($field, $fieldlist)) {
+							} else  {
+								$response[$uid][$pid][$field]=$data[$uid][$pid][$field];
+							}
+						}
+					}
+					if (isset($_REQUEST['field'])&&!in_array('link', $fieldlist)) {
+					} else  {
+						$response[$uid][$pid]['link']=$oj->statuslink($uid, $pid);
+					}
 				}
 			}
 		}

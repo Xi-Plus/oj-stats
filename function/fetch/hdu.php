@@ -1,13 +1,13 @@
 <?php
-require_once(__DIR__.'/../config/config.php');
+require_once(__DIR__.'/../../config/config.php');
 require_once($config["curl_path"]);
 require_once(__DIR__.'/global.php');
-class poj {
+class hdu {
 	private $info=array(
-		'id'=>'poj',
-		'name'=>'PKU JudgeOnline',
+		'id'=>'hdu',
+		'name'=>'HDU Online Judge',
 		'pattern'=>'[1-9]{1}[0-9]{3}',
-		'url'=>'http://poj.org'
+		'url'=>'http://acm.hdu.edu.cn'
 	);
 
 	public function ojinfo() {
@@ -15,15 +15,15 @@ class poj {
 	}
 
 	public function problink($pid) {
-		return 'http://poj.org/problem?id='.$pid;
+		return 'http://acm.hdu.edu.cn/showproblem.php?pid='.$pid;
 	}
 
 	public function userlink($uid) {
-		return 'http://poj.org/userstatus?user_id='.$uid;
+		return 'http://acm.hdu.edu.cn/userstatus.php?user='.$uid;
 	}
 
 	public function statuslink($uid, $pid) {
-		return 'http://poj.org/status?problem_id='.$pid.'&user_id='.$uid;
+		return 'http://acm.hdu.edu.cn/status.php?pid='.$pid.'&user='.$uid;
 	}
 
 	public function userinfo($validtime, $users) {
@@ -46,25 +46,25 @@ class poj {
 		$response=array('info'=>array(), 'stat'=>array());
 		$data=cURL_HTTP_Request($this->userlink($uid))->html;
 		$data=str_replace(array("\n","\t"),"",$data);
-		if (preg_match('/'.$uid.'--(.+?)  <\/a>.*?Last Loginned Time:(.+?)<br>.*?Solved:<\/td>.*?>(\d+?)<\/a>.*?Submissions:<\/td>.*?>(\d+?)<\/a>.*?School:<\/td>.*?>(.+?) <\/td>.*?Email:<\/td>.*?>(.+?) <\/td>/', $data, $match)) {
+		if (preg_match('/<h1.*?>(.+?)<\/h1>.*?>from: (.+?)&nbsp;.*?registered on (.+?)<.*?>Rank<.*?>(\d+?)<.*?>Problems Submitted<.*?>(\d+?)<.*?>Problems Solved<.*?>(\d+?)<.*?>Submissions<.*?>(\d+?)<.*?>Accepted<.*?>(\d+?)<\/td>/', $data, $match)) {
 			$response['info']['Nickname']=$match[1];
-			$response['info']['Last Loginned Time']=$match[2];
-			$response['info']['Solved']=$match[3];
-			$response['info']['Submissions']=$match[4];
-			$response['info']['School']=$match[5];
-			$response['info']['Email']=$match[6];
+			$response['info']['from']=$match[2];
+			$response['info']['registered on']=$match[3];
+			$response['info']['Rank']=$match[4];
+			$response['info']['Problems Submitted']=$match[5];
+			$response['info']['Problems Solved']=$match[6];
+			$response['info']['Submissions']=$match[7];
+			$response['info']['Accepted']=$match[8];
 		}
-		$data=cURL_HTTP_Request('http://poj.org/usercmp?uid1='.$uid.'&uid2='.$uid)->html;
-		$data=str_replace(array("\n","\t"),"",$data);
-		if (preg_match('/Problems both.*?accepted(.+?)Problems only.*?tried but failed/', $data, $match)) {
-			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
+		if (preg_match('/List of solved problems(.+?)List of unsolved problems/', $data, $match)) {
+			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]['status']='AC';
 				}
 			}
 		}
-		if (preg_match('/Problems both.*?tried but failed(.+?)Home Page/', $data, $match)) {
-			if (preg_match_all('/<a href.*?>('.$this->info['pattern'].') <\/a>/', $match[1], $match2)) {
+		if (preg_match('/List of unsolved problems(.+?)Neighbours/', $data, $match)) {
+			if (preg_match_all('/p\(('.$this->info['pattern'].'),\d+,\d+\)/', $match[1], $match2)) {
 				foreach ($match2[1] as $pid) {
 					$response['stat'][$pid]['status']='NA';
 				}
